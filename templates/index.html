@@ -4,32 +4,32 @@
     </head>
 <body>
     <div>
-        <table id="leaderboard" class="leaderboard">
-            <thead>
-            <tr>
-                <th onclick="sortAlpha(0)">Name </th>
-                <th onclick="sortNum(1)">Level</th>
-                <th onclick="sortAlpha(2)">Tier</th>
-                <th onclick="sortAlpha(3)">Rank</th>
-                <th onclick="sortNum(4)">LP</th>
-                <th onclick="sortNum(5)">Wins</th>
-                <th onclick="sortNum(6)">Losses</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for i in range(0,length)%}
-            <tr>
-                <td> {{nameList[i]}}</td>
-                <td> {{levelList[i]}}</td>
-                <td> {{tierList[i]}}</td>
-                <td> {{rankList[i]}}</td>
-                <td> {{lpList[i]}}</td>
-                <td> {{winsList[i]}}</td>
-                <td> {{loseList[i]}}</td>
-            </tr>
-            {%endfor%}
-            </tbody>
-        </table>
+      <table id="leaderboard" class="leaderboard">
+        <thead>
+        <tr>
+            <th onclick="sortAlpha(0)">Name </th>
+            <th onclick="sortNum(1)">Level</th>
+            <th onclick="sortAlpha(2)">Tier</th>
+            <th onclick="sortAlpha(3)">Rank</th>
+            <th onclick="sortNum(4)">LP</th>
+            <th onclick="sortNum(5)">Wins</th>
+            <th onclick="sortNum(6)">Losses</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key, value in playerDict.items()%}
+        <tr>
+            <td> {{key}}</td>
+            <td> {{value[0]}}</td>
+            <td> {{value[1]}}</td>
+            <td> {{value[2]}}</td>
+            <td> {{value[3]}}</td>
+            <td> {{value[4]}}</td>
+            <td> {{value[5]}}</td>
+        </tr>
+        {%endfor%}
+        </tbody>
+    </table>
     </div>
     <script>
 function sortAlpha(n) {
