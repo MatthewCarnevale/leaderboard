@@ -10,6 +10,7 @@ import enum
 from timer import daily, hourly
 import time
 from player import Player
+import json
 
 dotenv_path = join(dirname(__file__), "keys.env")
 load_dotenv(dotenv_path)
@@ -46,16 +47,15 @@ def playerCreate():
             queueID = 1
         ranks = {}
         ranks[summoner.get("name")] = [ranked_stats[queueID].get("leaguePoints"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank")]
-        print(ranks)
+        #print(ranks)
         convertedMMR = rankConversion(ranks)
-        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), convertedMMR, ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
+        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"), ranked_stats[queueID].get("leaguePoints"), convertedMMR, ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
         #player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"),ranked_stats[queueID].get("leaguePoints"),ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
         playerList.append(player)
     return playerList
 
 def rankConversion(ranks):
     mmr = 0
-    rankList = []
     for name, rank in ranks.items():
         if rank[1] == "Iron":
            mmr = 0
@@ -89,13 +89,12 @@ def rankConversion(ranks):
             mmr = 0
         convert = 0
         convert = int(rank[0]) + mmr
-        rankList.append(convert)
-    return rankList
+    return convert
 
 def constructDict(playerList):
     playerDict = {}
     for player in playerList:
-        playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.wins, player.losses]
+        playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.wins, player.losses, player.mmr]
     return playerDict
 
 def timeTest():
@@ -116,24 +115,26 @@ def timeTest():
     oldMinute = cur.fetchone()
     try:
         #needs a smaller miunte window, probably 20~. if a real api key makes things faster i can do even smaller intervals (10 is optimal), if a real api key is the same we wont as large a window as possible without losing game tracking
-        if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 30 and minutes > 30) or 1 == 1:
+        if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 30 and minutes > 30):
+            print("doin the update")
             players = playerCreate()
             playerDict = constructDict(players)
             sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
             cur.execute(sql, (date, hour, minutes))
             conn.commit()
             for key, value in playerDict.items():
-                sql = "INSERT INTO playerdata(name,level,tier,rank,lp,wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s)"
-                cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4],value[5]))
+                sql = "INSERT INTO playerdata(name,level,tier,rank,lp,wins,losses, mmr) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+                cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4],value[5],value[6]))
                 conn.commit()
         else:
+            print("pullin the database")
             playerList = []
-            fetchPlayers = "SELECT name,level,tier,rank,lp,wins,losses FROM playerdata ORDER BY id DESC LIMIT 19"
+            fetchPlayers = "SELECT name,level,tier,rank,lp,wins,losses, mmr FROM playerdata ORDER BY id DESC LIMIT 19"
             cur.execute(fetchPlayers)
             players = cur.fetchall()
             players.reverse()
             for dump in players:
-                player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6])
+                player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6], dump[7])
                 playerList.append(player)
             playerDict = constructDict(playerList)
     #really need to figure out what to do with this, its suppsosed to make things work if tables are empty.        
@@ -153,7 +154,8 @@ def index():
     playerDict = timeTest()
     return flask.render_template(
         "index.html",
-        playerDict = playerDict
+        playerDict = playerDict,
+        data=json.dumps(playerDict)
     )
 
 app.run(port=int(os.getenv("PORT", 8080)), host=os.getenv("IP", "0.0.0.0"))
