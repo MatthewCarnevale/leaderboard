@@ -29,8 +29,8 @@ def dbCon():
     cur = conn.cursor()
     return conn, cur
 
-#users = ["MarTea", "StinGod", "Bassel", "Trúst", "Big ItzWeird", "K3v1nRul3s", "Kareem100", "AminRhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "Shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "KerØ"]
-users = ["MarTea", "StinGod"]
+users = ["MarTea", "StinGod", "Bassel", "Trúst", "Big ItzWeird", "K3v1nRul3s", "Kareem100", "AminRhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "Shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "KerØ"]
+#users = ["MarTea", "StinGod"]
 
 def playerCreate():
     playerList = []
@@ -44,9 +44,53 @@ def playerCreate():
             queueID = 0
         else:
             queueID = 1
-        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"),ranked_stats[queueID].get("leaguePoints"),ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
+        ranks = {}
+        ranks[summoner.get("name")] = [ranked_stats[queueID].get("leaguePoints"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank")]
+        print(ranks)
+        convertedMMR = rankConversion(ranks)
+        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), convertedMMR, ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
+        #player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"),ranked_stats[queueID].get("leaguePoints"),ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
         playerList.append(player)
     return playerList
+
+def rankConversion(ranks):
+    mmr = 0
+    rankList = []
+    for name, rank in ranks.items():
+        if rank[1] == "Iron":
+           mmr = 0
+        elif rank[1] == "Bronze":
+            mmr = 100
+        elif rank[1] == "Silver":
+            mmr = 200
+        elif rank[1] == "Gold":
+            mmr = 300
+        elif rank[1] == "Platinum":
+            mmr = 400
+        elif rank[1] == "Diamond":
+            mmr = 500
+        elif rank[1] == "Master":
+            mmr = 600
+        elif rank[1] == "Grandmaster":
+            mmr = 700
+        elif rank[1] == "Challenger":
+            mmr = 800
+        else:
+            mmr = -1
+        if rank[2] == "I":
+            mmr = mmr + 1000
+        elif rank[2] == "II":
+            mmr = mmr + 2000
+        elif rank[2] == "III":
+            mmr = mmr + 3000
+        elif rank[2] == "IV":
+            mmr = mmr + 4000
+        else:
+            mmr = 0
+        convert = 0
+        convert = int(rank[0]) + mmr
+        rankList.append(convert)
+    return rankList
 
 def constructDict(playerList):
     playerDict = {}
@@ -71,7 +115,8 @@ def timeTest():
     cur.execute(oldMinuteFetch)
     oldMinute = cur.fetchone()
     try:
-        if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 30 and minutes > 30):
+        #needs a smaller miunte window, probably 20~. if a real api key makes things faster i can do even smaller intervals (10 is optimal), if a real api key is the same we wont as large a window as possible without losing game tracking
+        if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 30 and minutes > 30) or 1 == 1:
             players = playerCreate()
             playerDict = constructDict(players)
             sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
@@ -83,9 +128,10 @@ def timeTest():
                 conn.commit()
         else:
             playerList = []
-            fetchPlayers = "SELECT name,level,tier,rank,lp,wins,losses FROM playerdata ORDER BY id DESC LIMIT 2"
+            fetchPlayers = "SELECT name,level,tier,rank,lp,wins,losses FROM playerdata ORDER BY id DESC LIMIT 19"
             cur.execute(fetchPlayers)
             players = cur.fetchall()
+            players.reverse()
             for dump in players:
                 player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6])
                 playerList.append(player)
