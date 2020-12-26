@@ -34,6 +34,7 @@ users = ["MarTea", "StinGod"]
 
 def playerCreate():
     playerList = []
+    print("hello i am making riot games api calls")
     for user in users:
         queueID = 0
         summoner = lolwatcher.summoner.by_name(my_region, user)
@@ -45,19 +46,16 @@ def playerCreate():
             queueID = 1
         player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"),ranked_stats[queueID].get("leaguePoints"),ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
         playerList.append(player)
-    length = len(playerList)
-    return playerList, length
-players, length = playerCreate()
+    return playerList
 
 def constructDict(playerList):
     playerDict = {}
-    for player in players:
+    for player in playerList:
         playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.wins, player.losses]
     return playerDict
-print(constructDict(players))
 
 def timeTest():
-    playerList = playerCreate()
+    #playerList = playerCreate()
     conn, cur = dbCon()
     date = datetime.datetime.now()
     hour = int(date.strftime("%H"))
@@ -72,23 +70,34 @@ def timeTest():
     oldMinuteFetch = "SELECT minutes FROM timetracker ORDER BY id DESC LIMIT 1;"
     cur.execute(oldMinuteFetch)
     oldMinute = cur.fetchone()
-    #checks for timeing, updates every 30 minutes or sooner. right now just tracks time accurately, under the if should store all player data into database, add an else to load that data rather than str8 api pull
     try:
-        if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 30 and minutes > 30) :
+        if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 30 and minutes > 30):
+            players = playerCreate()
+            playerDict = constructDict(players)
             sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
             cur.execute(sql, (date, hour, minutes))
             conn.commit()
+            for key, value in playerDict.items():
+                sql = "INSERT INTO playerdata(name,level,tier,rank,lp,wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+                cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4],value[5]))
+                conn.commit()
+        else:
+            playerList = []
+            fetchPlayers = "SELECT name,level,tier,rank,lp,wins,losses FROM playerdata ORDER BY id DESC LIMIT 2"
+            cur.execute(fetchPlayers)
+            players = cur.fetchall()
+            for dump in players:
+                player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6])
+                playerList.append(player)
             playerDict = constructDict(playerList)
-            #gonna try and make dictonary like good boy instead of list otp
-            #sql = "INSERT INTO playerdata()"
-        #TEMP TEMP TEMP TEMP TEMP BELOW TEMP TEMP TEMP TEMP
-        playerDict = constructDict(playerList)
+    #really need to figure out what to do with this, its suppsosed to make things work if tables are empty.        
     except:
         sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
         cur.execute(sql, (date, hour, minutes))
         conn.commit()
         #TEMP TEMP TEMP TEMP TEMP BELOW TEMP TEMP TEMP TEMP
-        playerDict = constructDict(playerList)
+        playerDict = {}
+        print("FUUUUUUUCK")
     cur.close()
     conn.close()
     return playerDict
