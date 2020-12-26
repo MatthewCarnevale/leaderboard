@@ -60,31 +60,31 @@ def rankConversion(ranks):
         if rank[1] == "Iron":
            mmr = 0
         elif rank[1] == "Bronze":
-            mmr = 100
+            mmr = 1000
         elif rank[1] == "Silver":
-            mmr = 200
+            mmr = 2000
         elif rank[1] == "Gold":
-            mmr = 300
+            mmr = 3000
         elif rank[1] == "Platinum":
-            mmr = 400
+            mmr = 4000
         elif rank[1] == "Diamond":
-            mmr = 500
+            mmr = 5000
         elif rank[1] == "Master":
-            mmr = 600
+            mmr = 6000
         elif rank[1] == "Grandmaster":
-            mmr = 700
+            mmr = 7000
         elif rank[1] == "Challenger":
-            mmr = 800
+            mmr = 8000
         else:
             mmr = -1
         if rank[2] == "I":
-            mmr = mmr + 1000
+            mmr = mmr + 400
         elif rank[2] == "II":
-            mmr = mmr + 2000
+            mmr = mmr + 300
         elif rank[2] == "III":
-            mmr = mmr + 3000
+            mmr = mmr + 200
         elif rank[2] == "IV":
-            mmr = mmr + 4000
+            mmr = mmr + 100
         else:
             mmr = 0
         convert = 0
