@@ -3,30 +3,33 @@
          <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}/>
     </head>
 <body>
+    The LPΔ value is being compared to players lp from {{date}} at 1:00 am
     <div>
       <table id="leaderboard" class="leaderboard">
         <thead>
         <tr>
-            <th onclick="sortAlpha(0)">Name </th>
-            <th onclick="sortNum(1)">Level</th>
-            <th onclick=sortRank(2)>Tier</th>
-            <th onclick="sortRank(3)">Rank</th>
-            <th onclick="sortRank(4)">LP</th>
-            <th onclick="sortNum(5)">Wins</th>
-            <th onclick="sortNum(6)">Losses</th>
-            <th onclick="sortNum(7)">LPΔ</th>
+            <th onclick="sortAlpha('name')">Name </th>
+            <th onclick="sortNum('level')">Level</th>
+            <th onclick="sortNum('mmr')">Tier</th>
+            <!-- <th onclick="sortNum('mmr')">Rank</th> -->
+            <!-- <th onclick="sortNum('mmr')">LP</th> -->
+            <th onclick="sortNum('wins')">Wins</th>
+            <th onclick="sortNum('losses')">Losses</th>
+            <th onclick="sortNum('totalgames')">Total Games</th>
+            <th onclick="sortNum('wins')">Winrate</th>
+            <th onclick="sortNum('lpdelta')">LPΔ</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id='leaderboard-body'>
         {% for key, value in playerDict.items()%}
-        <tr data-name={{key}}>
+        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[4]}} data-losses={{value[5]}} data-totalgames={{value[4]+value[5]}} data-winrate={{value[4]/(value[4]+value[5])}} data-mmr={{value[6]}} data-lpdelta={{value[7]}} class='leaderboard-row'>
             <td> {{key}}</td>
             <td> {{value[0]}}</td>
-            <td> {{value[1]}}</td>
-            <td> {{value[2]}}</td>
-            <td> {{value[3]}}</td>
-            <td> {{value[4]}}</td>
+            <td> {{value[1]}} {{value[2]}} {{value[3]}}LP</td>
+            <td>{{value[4]}}</td>
             <td> {{value[5]}}</td>
+            <td> {{value[4] + value[5]}}</td>
+            <td> {{'%0.2f' | format((value[4] / (value[4] + value[5]))*100)}}% </td>
             <td> {{value[7]}}</td>
         </tr>
         {%endfor%}
@@ -34,140 +37,10 @@
     </table>
     </div>
     Thanks to KC (Kalichi) for helping with a lot of the javascript stuff :D
+
+    <script src={{ url_for('static', filename='script.js') }}></script>
   </body>
 </HTML>
     <script>
-function sortAlpha(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("leaderboard");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc"; 
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-        //start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /*Loop through all table rows (except the
-        first, which contains table headers):*/
-        for (i = 1; i < (rows.length - 1); i++) {
-            //start by saying there should be no switching:
-            shouldSwitch = false;
-            /*Get the two elements you want to compare,
-            one from current row and one from the next:*/
-            x = rows[i].getElementsByTagName("TD")[n];
-            y = rows[i + 1].getElementsByTagName("TD")[n];
-            /*check if the two rows should switch place,
-            based on the direction, asc or desc:*/
-            if (dir == "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    //if so, mark as a switch and break the loop:
-                    shouldSwitch= true;
-                    break;
-                }
-              } else if (dir == "desc") {
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                  //if so, mark as a switch and break the loop:
-                  shouldSwitch = true;
-                  break;
-                }
-              }
-            }
-            if (shouldSwitch) {
-              /*If a switch has been marked, make the switch
-              and mark that a switch has been done:*/
-              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-              switching = true;
-              //Each time a switch is done, increase this count by 1:
-              switchcount ++;      
-            } else {
-              /*If no switching has been done AND the direction is "asc",
-              set the direction to "desc" and run the while loop again.*/
-              if (switchcount == 0 && dir == "asc") {
-                dir = "desc";
-                switching = true;
-              }
-            }
-          }
-        }
-  function sortNum(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("leaderboard");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc"; 
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-        //start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /*Loop through all table rows (except the
-        first, which contains table headers):*/
-        for (i = 1; i < (rows.length - 1); i++) {
-            //start by saying there should be no switching:
-            shouldSwitch = false;
-            /*Get the two elements you want to compare,
-            one from current row and one from the next:*/
-            x = rows[i].getElementsByTagName("TD")[n];
-            y = rows[i + 1].getElementsByTagName("TD")[n];
-            /*check if the two rows should switch place,
-            based on the direction, asc or desc:*/
-            if (dir == "asc") {
-                if (Number(x.innerHTML) > Number(y.innerHTML)) {
-                    //if so, mark as a switch and break the loop:
-                    shouldSwitch= true;
-                    break;
-                }
-              } else if (dir == "desc") {
-                if (Number(x.innerHTML) < Number(y.innerHTML)) {
-                  //if so, mark as a switch and break the loop:
-                  shouldSwitch = true;
-                  break;
-                }
-              }
-            }
-            if (shouldSwitch) {
-              /*If a switch has been marked, make the switch
-              and mark that a switch has been done:*/
-              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-              switching = true;
-              //Each time a switch is done, increase this count by 1:
-              switchcount ++;      
-            } else {
-              /*If no switching has been done AND the direction is "asc",
-              set the direction to "desc" and run the while loop again.*/
-              if (switchcount == 0 && dir == "asc") {
-                dir = "desc";
-                switching = true;
-              }
-            }
-          }
-        }
-  function sortRank(n) {
-    var playerObject = {{ playerDict|safe }}
-    //console.log(playerObject)
-    console.log("it work")
-    console.log(playerObject)
-    var objectKeys = Object.keys(playerObject)
-    //temp[0] name
-    //console.log({objectKeys})
-    //console.log(test["MarTea"][5])
-    //console.log(playerObject[objectKeys[0]][5])
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("leaderboard");
-    switching = true;
-    //Set the sorting direction to ascending:
-    dir = "asc"; 
-    /*Make a loop that will continue until
-    no switching has been done:*/
-    while (switching) {
-        //start by saying: no switching is done:
-        switching = false;
-        rows = table.rows;
-        /*Loop through all table rows (except the
-        first, which contains table headers):*/
-        }
-      }
+      
     </script>    

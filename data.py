@@ -92,6 +92,15 @@ def constructDict(playerList):
     print("dict of player objects made")
     return playerDict
 
+def deltaDate():
+    #select date from daily update
+    #use jinja to display date somewhere
+    conn, cur = dbCon()
+    fetchDate = "SELECT date FROM dailylp ORDER BY id DESC LIMIT 1"
+    cur.execute(fetchDate)
+    date = cur.fetchone()
+    date = date[0]
+    return date
 def dbPull():
     conn, cur = dbCon()
     print("pullin the database")

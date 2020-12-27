@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 .leaderboard {
     border-collapse: collapse;
     margin: 25px 0;
@@ -23,4 +27,7 @@
 }
 .leaderboard tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
+}
+.leaderboard th, tr, td {
+    border: 1px solid black;
 }
