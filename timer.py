@@ -1,7 +1,7 @@
 import psycopg2
 import datetime
 import time
-from leaderboard import dbCon, playerCreate, constructDict
+from data import dbCon, playerCreate, constructDict
 
 
 def timeTest():
@@ -43,13 +43,9 @@ def timeTest():
             dailyLP.reverse()
             startingMmr = dailyLP[counter][0]
             counter = counter+1
-            #value[4] is currnet mmr
-            if startingMmr > value[4]:
-                delta = startingMmr - value[4]
-            elif startingMmr <= value[4]:
-                delta = value[4] - startingMmr
-
+            delta = value[4] - startingMmr
             sql = "INSERT INTO playerdata(name,level,tier,rank,lp, mmr, lpdelta, wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s,%s, %s);"
-            cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4], delta, value[5],value[6]))
+            cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4], delta, value[6],value[7]))
             conn.commit()
 timeTest()
+print("ok me done with api push")

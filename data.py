@@ -1,5 +1,18 @@
+import os
+import flask
+from riotwatcher import LolWatcher, ApiError
+import flask_sqlalchemy
+import psycopg2
+import datetime
+from os.path import join, dirname
+from dotenv import load_dotenv
+import enum
+import time
+from player import Player
 
-
+dotenv_path = join(dirname(__file__), "keys.env")
+load_dotenv(dotenv_path)
+riot = os.environ["RIOT"]
 def dbCon():
     conn = psycopg2.connect(
         host="localhost",
@@ -88,7 +101,6 @@ def dbPull():
     players = cur.fetchall()
     players.reverse()
     for dump in players:
-        print(dump)
         player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6], dump[7], dump[8])
         playerList.append(player)
     playerDict = constructDict(playerList)
