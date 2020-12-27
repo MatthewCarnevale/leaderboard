@@ -1,20 +1,4 @@
-import os
-import flask
-from riotwatcher import LolWatcher, ApiError
-import flask_sqlalchemy
-import psycopg2
-import datetime
-from os.path import join, dirname
-from dotenv import load_dotenv
-import enum
-import time
-from player import Player
 
-dotenv_path = join(dirname(__file__), "keys.env")
-load_dotenv(dotenv_path)
-
-app = flask.Flask(__name__)
-riot = os.environ["RIOT"]
 
 def dbCon():
     conn = psycopg2.connect(
@@ -120,14 +104,3 @@ def dbPull():
     conn.close()
     print("time based updating checked")
     return playerDict
-
-@app.route("/")
-def index():
-    playerDict = dbPull()
-    print("page should be loaded")
-    return flask.render_template(
-        "index.html",
-        playerDict = playerDict
-    )
-
-app.run(port=int(os.getenv("PORT", 8080)), host=os.getenv("IP", "0.0.0.0"))
