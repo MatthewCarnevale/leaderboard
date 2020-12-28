@@ -86,9 +86,11 @@ function color() {
     td = tr[i].getElementsByTagName("td")[7];
     // console.log(td) = lpdelta value per row
     if(td) {
-      if(td < 0) {
+      if(td.innerHTML < 0) {
+        console.log("should be red")
         td.style.backgroundColor = "red"
-      } else if (td > 0) {
+      } else if (td.innerHTML > 0) {
+        console.log("should be green")
         td.style.backgroundColor = "green"
        } //else {
          //td.style.backgroundColor = "yellow"

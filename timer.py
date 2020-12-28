@@ -21,7 +21,7 @@ def timeTest():
     oldMinute = cur.fetchone()
     #try:
     #needs a smaller miunte window, probably 20~. if a real api key makes things faster i can do even smaller intervals (10 is optimal), if a real api key is the same we wont as large a window as possible without losing game tracking
-    if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 20 and minutes > 20) or (oldMinute[0] <= 40 and minutes > 40):
+    if date != oldDate[0] or hour != oldHour[0] or (oldMinute[0] <= 20 and minutes > 20) or (oldMinute[0] <= 40 and minutes > 40) or 1==1:
         print("doin the update")
         players = playerCreate()
         playerDict = constructDict(players)

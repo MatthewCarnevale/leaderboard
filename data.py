@@ -23,20 +23,28 @@ def dbCon():
     print("db connection established")
     return conn, cur
 
-users = ["MarTea", "StinGod", "Bassel", "Trúst", "Big ItzWeird", "K3v1nRul3s", "Kareem100", "AminRhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "Shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "KerØ"]
-#users = ["MarTea", "StinGod"]
-
-def playerCreate():
+def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
-    playerList = []
     print("hello i am making riot games api calls")
+    summoner = lolwatcher.summoner.by_name(my_region, user)
+    ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
+    return summoner, ranked_stats
+
+users = ["MarTea", "StinGod", "Bassel", "Trúst", "Big ItzWeird", "K3v1nRul3s", "Kareem100", "AminRhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "Shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "KerØ"]
+
+def playerCreate():
+    # lolwatcher = LolWatcher(riot)
+    # my_region="na1"
+    playerList = []
+    # print("hello i am making riot games api calls")
     counter = 0
     dayGames = dailyGames()
     for user in users:
         queueID = 0
-        summoner = lolwatcher.summoner.by_name(my_region, user)
-        ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
+        # summoner = lolwatcher.summoner.by_name(my_region, user)
+        # ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
+        summoner, ranked_stats = rankedStatsBuilder(user)
         queue = ranked_stats[queueID].get("queueType")
         if queue == "RANKED_SOLO_5x5":
             queueID = 0
@@ -130,6 +138,10 @@ def deltaDate():
     date = cur.fetchone()
     date = date[0]
     return date
+
+def matchhistoryshit():
+    print("shit fuck")
+
 def dbPull():
     conn, cur = dbCon()
     print("pullin the database")
