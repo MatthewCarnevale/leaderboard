@@ -4,7 +4,6 @@ import flask_sqlalchemy
 from data import dbPull, deltaDate
 
 app = flask.Flask(__name__)
-
 @app.route("/")
 def index():
     playerDict = dbPull()
@@ -13,7 +12,7 @@ def index():
     return flask.render_template(
         "index.html",
         playerDict = playerDict,
-        date = date
+        date = date,
     )
 
 app.run(port=int(os.getenv("PORT", 8080)), host=os.getenv("IP", "0.0.0.0"))

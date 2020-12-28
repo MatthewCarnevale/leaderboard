@@ -1,5 +1,4 @@
 // summonerName: [level, tier, rank, lp, mmr, lpdelta, wins, losses]
-console.log('hello4')
 
 const tableBody = document.getElementById('leaderboard-body');
 
@@ -9,7 +8,7 @@ let currentSort = {
 };
 
 /**
- * @param {'mmr' | 'level' | 'wins' | 'losses' | 'lpdelta'} by
+ * @param {'mmr' | 'level' | 'wins' | 'losses' | 'lpdelta' | 'dailywins'} by
  */
 const sortNum = (by) => {
   const tempRows = Array.from(tableBody.childNodes).filter(row => !!row.dataset && !!row.dataset[by]);
@@ -51,3 +50,50 @@ const sortAlpha = (by) => {
 };
 
 sortNum('mmr');
+
+function search() {
+  // Declare variables
+  var input, filter, table, table2, tr, tr2, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("leaderboard");
+  tr = table.getElementsByTagName("tr");
+  table2 = document.getElementById("rnk");
+  tr2 = table2.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+        tr2[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+        tr2[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function color() {
+  var table, tr, td, i, lpDelta;
+  table = document.getElementById("leaderboard");
+  tr = table.getElementsByTagName("tr");
+
+  for(i=0; i< tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[7];
+    // console.log(td) = lpdelta value per row
+    if(td) {
+      if(td < 0) {
+        td.style.backgroundColor = "red"
+      } else if (td > 0) {
+        td.style.backgroundColor = "green"
+       } //else {
+         //td.style.backgroundColor = "yellow"
+       //}
+    }
+  }
+}
+color();

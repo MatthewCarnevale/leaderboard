@@ -27,9 +27,10 @@ def timeTest():
         playerDict = constructDict(players)
         if date != oldDate[0]:
             print("making daily lp check")
-            sql = "INSERT INTO dailylp (summoner, date, lp) VALUES (%s,%s,%s);"
+            sql = "INSERT INTO dailylp (summoner, date, lp, totalgames) VALUES (%s,%s,%s,%s);"
             for key, value in playerDict.items():
-                cur.execute(sql, (key, date, value[4]))
+                totalGames = value[7] + value[8]
+                cur.execute(sql, (key, date, value[4], totalGames))
                 conn.commit()
         sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
         cur.execute(sql, (date, hour, minutes))
@@ -42,10 +43,15 @@ def timeTest():
             dailyLP = cur.fetchall()
             dailyLP.reverse()
             startingMmr = dailyLP[counter][0]
+            sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 19"
+            cur.execute(sql)
+            dailyGames = cur.fetchall()
+            dailyGames.reverse()
+            totalDayGames = (value[7] + value[8]) - dailyGames[counter][0]
             counter = counter+1
             delta = value[4] - startingMmr
-            sql = "INSERT INTO playerdata(name,level,tier,rank,lp, mmr, lpdelta, wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s,%s, %s);"
-            cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4], delta, value[6],value[7]))
+            sql = "INSERT INTO playerdata(name,level,tier,rank,lp, mmr, lpdelta, dailygames, wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+            cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4], delta, totalDayGames, value[7],value[8]))
             conn.commit()
 timeTest()
 print("ok me done with api push")

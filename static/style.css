@@ -9,6 +9,7 @@
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    display: inline-block;
 }
 .leaderboard thead tr {
     background-color: #009879;
@@ -20,6 +21,7 @@
 }
 .leaderboard tbody tr {
     border-bottom: 1px solid #dddddd;
+    height: 20px;
 }
 
 .leaderboard tbody tr:nth-of-type(even) {
@@ -28,6 +30,47 @@
 .leaderboard tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
 }
+/* .leaderboard tbody tr {
+    height: 44px;
+} */
 .leaderboard th, tr, td {
     border: 1px solid black;
 }
+
+.rnk {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    float: left;
+}
+.rnk thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.rnk th, td {
+    padding: 12px 15px;
+}
+.rnk tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.rnk tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.rnk tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+.rnk th, tr, td {
+    border: 1px solid black;
+}
+.opgg {
+    text-decoration: none;
+    color: black;
+}
+/* .checkbox {
+    transform: scale(0.5)
+} */

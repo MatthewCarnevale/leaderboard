@@ -31,6 +31,8 @@ def playerCreate():
     my_region="na1"
     playerList = []
     print("hello i am making riot games api calls")
+    counter = 0
+    dayGames = dailyGames()
     for user in users:
         queueID = 0
         summoner = lolwatcher.summoner.by_name(my_region, user)
@@ -43,8 +45,23 @@ def playerCreate():
         ranks = {}
         ranks[summoner.get("name")] = [ranked_stats[queueID].get("leaguePoints"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank")]
         convertedMMR = rankConversion(ranks)
-        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"), ranked_stats[queueID].get("leaguePoints"), convertedMMR, 0, ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
+        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"), ranked_stats[queueID].get("leaguePoints"), convertedMMR, 0, dayGames[counter], ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
         playerList.append(player)
+        counter = counter+1
+        #match history stuff makes more api calls which is bad news
+        #matches = lolwatcher.match.matchlist_by_account(my_region, summoner['accountId'])
+        #print(matches)
+        """
+        for value in matches["matches"]:
+            #value is a dict of things that includes (most importantly) gameId to be used to find data related to the specific game
+            print(value)
+            #from value we need gameId, champion, queue, role, lane
+            matchDetails = lolwatcher.match.by_id(my_region, value['gameId'])
+            #from matchDetails we need gameDuration, teams, bans, participants
+            #from matchDetails teams list->dict need win, firstBlood, firstTower, firstBaron, firstDragon, firstRiftHearld... etc
+            #from bans list->dict we need champion id many times
+        """
+
     print("list of players loaded")
     return playerList
 
@@ -85,10 +102,22 @@ def rankConversion(ranks):
         convert = int(rank[0]) + mmr
     return convert
 
+def dailyGames():
+    #run select query for daily games?
+    conn, cur = dbCon()
+    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 19"
+    cur.execute(sql)
+    totalgames = cur.fetchall()
+    totalgames.reverse()
+    dGames = []
+    for i in range(0,19):
+        dGames.append(totalgames[i][0])
+    return dGames
+
 def constructDict(playerList):
     playerDict = {}
     for player in playerList:
-        playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.mmr, player.lpdelta, player.wins, player.losses]
+        playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.mmr, player.lpdelta, player.dailywins, player.wins, player.losses]
     print("dict of player objects made")
     return playerDict
 
@@ -105,12 +134,12 @@ def dbPull():
     conn, cur = dbCon()
     print("pullin the database")
     playerList = []
-    fetchPlayers = "SELECT name,level,tier,rank,lp,wins,losses, mmr, lpdelta FROM playerdata ORDER BY id DESC LIMIT 19"
+    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 19"
     cur.execute(fetchPlayers)
     players = cur.fetchall()
     players.reverse()
     for dump in players:
-        player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6], dump[7], dump[8])
+        player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6], dump[7], dump[8],dump[9])
         playerList.append(player)
     playerDict = constructDict(playerList)
     #really need to figure out what to do with this, its suppsosed to make things work if tables are empty.        

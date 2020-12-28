@@ -4,7 +4,27 @@
     </head>
 <body>
     The LPΔ value is being compared to players lp from {{date}} at 1:00 am
+    <br> btw you can click usernames to go to users opgg page :D </br>
+    <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names..">
     <div>
+      {% set count = namespace(value=1) %}
+      <table id="rnk" class="rnk">
+        <thead>
+          <tr>
+            <!-- <th>toggle</th> -->
+            <th>Rnk#</th>
+          </tr>
+        </thead>
+        <tbody id='rnk-body'>
+        {% for key, value in playerDict.items()%}
+        <tr>
+        <!-- <td><input class="checkbox" type="checkbox"></td> -->
+        <td>{{count.value}}</td>
+        {% set count.value = count.value + 1 %}
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
       <table id="leaderboard" class="leaderboard">
         <thead>
         <tr>
@@ -14,21 +34,23 @@
             <th onclick="sortNum('wins')">Wins</th>
             <th onclick="sortNum('losses')">Losses</th>
             <th onclick="sortNum('totalgames')">Total Games</th>
-            <th onclick="sortNum('wins')">Winrate</th>
+            <th onclick="sortNum('winrate')">Winrate</th>
             <th onclick="sortNum('lpdelta')">LPΔ</th>
+            <th onclick="sortNum('wins')">daily games</th>
         </tr>
         </thead>
         <tbody id='leaderboard-body'>
         {% for key, value in playerDict.items()%}
-        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[4]}} data-losses={{value[5]}} data-totalgames={{value[4]+value[5]}} data-winrate={{value[4]/(value[4]+value[5])}} data-mmr={{value[6]}} data-lpdelta={{value[7]}} class='leaderboard-row'>
-            <td> {{key}}</td>
+        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8])}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} class='leaderboard-row'>
+            <td> <a class="opgg" href="https://na.op.gg/summoner/userName={{key}}" target="_blank"> {{key}}</a></td>
             <td> {{value[0]}}</td>
             <td> {{value[1]}} {{value[2]}} {{value[3]}}LP</td>
-            <td>{{value[4]}}</td>
+            <td>{{value[7]}}</td>
+            <td> {{value[8]}}</td>
+            <td> {{value[7] + value[8]}}</td>
+            <td> {{'%0.2f' | format((value[7] / (value[7] + value[8]))*100)}}% </td>
             <td> {{value[5]}}</td>
-            <td> {{value[4] + value[5]}}</td>
-            <td> {{'%0.2f' | format((value[4] / (value[4] + value[5]))*100)}}% </td>
-            <td> {{value[7]}}</td>
+            <td>{{value[6]}}</td>
         </tr>
         {%endfor%}
         </tbody>
@@ -39,6 +61,3 @@
     <script src={{ url_for('static', filename='script.js') }}></script>
   </body>
 </HTML>
-    <script>
-      
-    </script>    
