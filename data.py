@@ -26,12 +26,118 @@ def dbCon():
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
-    print("hello i am making riot games api calls")
+    print("making summoner api call")
     summoner = lolwatcher.summoner.by_name(my_region, user)
+    print("making ranked stats api call")
     ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
-    return summoner, ranked_stats
+    return summoner, ranked_stats, lolwatcher
 
 users = ["MarTea", "StinGod", "Bassel", "Trúst", "Big ItzWeird", "K3v1nRul3s", "Kareem100", "AminRhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "Shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "KerØ"]
+#users = ["Bassel", "Vayler"]
+
+def matchFunc(summoner, lolwatcher):
+    conn, cur = dbCon()
+    name = summoner["name"]
+    print("making matches api call")
+    matches = lolwatcher.match.matchlist_by_account("na1",summoner['accountId'])
+    last_match = matches['matches'][0]
+    gameId = last_match['gameId']
+    sql = "SELECT gameid FROM matchhistory WHERE name LIKE (%s)"
+    cur.execute(sql, (name,))
+    pastIds = cur.fetchall()
+    counter = 0
+    for tup in pastIds:
+        try:
+            if gameId == int(tup[0]):
+                return 0
+                print("should never hit")
+            counter = counter+1
+        except:
+            counter = counter+1
+    print("making match details api call")
+    match_details = lolwatcher.match.by_id("na1", last_match['gameId'])
+    queue_type = match_details["queueId"]
+    if queue_type == 420:
+        #convert game time to minutes/seconds from seconds
+        game_time = match_details["gameDuration"]
+        minutes = game_time / 60
+        minutes = str(int(minutes))
+        seconds = game_time % 60
+        if seconds < 10:
+            fixed = "0"+str(seconds)
+        else:
+            fixed = str(seconds)
+        game_time = minutes + ":" + fixed
+        teams = match_details["teams"]
+        identities = match_details["participantIdentities"]
+        i = 0
+        while name != identities[i]["player"]["summonerName"]:
+            i = i+1
+        participantId = i+1
+        for person in match_details["participants"]:
+            if person["participantId"] != participantId:
+                continue
+            else:
+                teamId = person["teamId"]
+                #convert champ id to name from number
+                championId = person["championId"]
+                stats = person["stats"]
+                #win is False/True bool
+                win = stats["win"]
+                kills = stats["kills"]
+                deaths = stats["deaths"]
+                assists = stats["assists"]
+                spree = stats["largestKillingSpree"]
+                #multi is 0,1,2,3,4 or 5
+                multi = stats["largestMultiKill"]
+                #convert longLife to minutes/seconds from seconds
+                longLife = stats["longestTimeSpentLiving"]
+                minutes = longLife / 60
+                minutes = str(int(minutes))
+                seconds = longLife % 60
+                if seconds < 10:
+                    fixed = "0"+str(seconds)
+                else:
+                    fixed = str(seconds)
+                longLife = minutes + ":" + fixed
+                doubles = stats["doubleKills"]
+                triples = stats["tripleKills"]
+                quadras = stats["quadraKills"]
+                pentas = stats["pentaKills"]
+                bigKrit = stats["largestCriticalStrike"]
+                champDmg = stats["totalDamageDealtToChampions"]
+                peter = stats["damageDealtToTurrets"]
+                vision = stats["visionScore"]
+                gold = stats["goldEarned"]
+                spent = stats["goldSpent"]
+                turrets = stats["turretKills"]
+                creeps = stats["totalMinionsKilled"]
+                level = stats["champLevel"]
+                #true/false value for first blood
+                firstBlood = stats["firstBloodKill"]
+
+                if teamId == teams[0]["teamId"]:
+                    dragCount = teams[0]["dragonKills"]
+                    baronCount = teams[0]["baronKills"]
+                    heraldCount = teams[0]["riftHeraldKills"]
+                else:
+                    dragCount = teams[1]["dragonKills"]
+                    baronCount = teams[1]["baronKills"]
+                    heraldCount = teams[1]["riftHeraldKills"]
+
+                timeline = person["timeline"]
+                role = timeline["role"]
+                lane = timeline["lane"]
+
+                sql = "INSERT INTO matchhistory (name, teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane, gameid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                cur.execute(sql, (name, teamId, championId, game_time, win, kills, deaths, assists, spree, multi, longLife, doubles, triples, quadras, pentas, bigKrit, champDmg, peter, vision, gold, spent, turrets, creeps, level, firstBlood, dragCount, baronCount, heraldCount, role, lane, gameId))
+                conn.commit()
+
+                break
+    else:
+        print("not a ranked solo/duo game, skipping person")
+    #its 30 s rn
+
 
 def playerCreate():
     # lolwatcher = LolWatcher(riot)
@@ -44,7 +150,10 @@ def playerCreate():
         queueID = 0
         # summoner = lolwatcher.summoner.by_name(my_region, user)
         # ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
-        summoner, ranked_stats = rankedStatsBuilder(user)
+        summoner, ranked_stats, lolwatcher = rankedStatsBuilder(user)
+        #if statement time check for match data call?
+        if 1 == 1:
+             matchFunc(summoner, lolwatcher)
         queue = ranked_stats[queueID].get("queueType")
         if queue == "RANKED_SOLO_5x5":
             queueID = 0
@@ -139,12 +248,9 @@ def deltaDate():
     date = date[0]
     return date
 
-def matchhistoryshit():
-    print("shit fuck")
-
-def dbPull():
+def rankedPull():
     conn, cur = dbCon()
-    print("pullin the database")
+    print("pullin the ranks")
     playerList = []
     fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 19"
     cur.execute(fetchPlayers)
@@ -166,3 +272,30 @@ def dbPull():
     conn.close()
     print("time based updating checked")
     return playerDict
+
+def statsPull():
+    conn, cur = dbCon()
+    print("pullin the matches")
+    for user in users:
+        sql = "SELECT teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane FROM matchhistory WHERE name LIKE (%s)"
+        cur.execute(sql, (user,))
+        stats = cur.fetchall()
+        print(user)
+        print(stats)
+
+def summonerInfo(summonerName):
+    conn, cur = dbCon()
+    sql = "SELECT teamid FROM matchhistory WHERE name=(%s)"
+    cur.execute(sql, (summonerName,))
+    stats = cur.fetchall()
+    print(stats)
+    print("aaaa")
+    cur.close()
+    conn.close()
+    stats = 1
+    return stats
+
+def test():
+    tost = summonerInfo("Bassel")
+    return test
+    
