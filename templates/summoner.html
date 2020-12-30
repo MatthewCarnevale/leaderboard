@@ -1,3 +1,63 @@
 <html>
+    <head><link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"></head>
 <h1>HELLO</h1>
+<body>
+    <div>
+        <table>
+            <thead>
+                {{name.capitalize()}}'s Match History
+                <tr>
+                    <th>Result</th>
+                    <th>Team</th>
+                    <th>Time</th>
+                    <th>Champion</th>
+                    <th>Level</th>
+                    <th>KDA</th>
+                    <th>CS</th>
+                    <th>Damage to Champions</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tuple in recentGameStats%}
+                <tr>
+                    <td>{{tuple[5]}}</td>
+                    <td>{{tuple[2]}}</td>
+                    <td>{{tuple[4]}}</td>
+                    <td>{{tuple[3]}}</td>
+                    <td>{{tuple[24]}}</td>
+                    <td>{{tuple[6]}} / {{tuple[7]}} / {{tuple[8]}}</td>
+                    <td>{{tuple[23]}}</td>
+                    <td>{{tuple[17]}}</td>
+                    <td>{{tuple[29]}} {{tuple[30]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                {{name.capitalize()}}'s Accolades
+                <tr>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>test</th>
+                    <th>test</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>test</td>
+                    <td>test</td>
+                    <td>test</td>
+                    <td>test</td>
+                    <td>test</td>
+                    <td>test</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {{tuple}}
+</body>
 </html>

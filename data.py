@@ -282,20 +282,14 @@ def statsPull():
         stats = cur.fetchall()
         print(user)
         print(stats)
+    cur.close()
+    conn.close()
 
 def summonerInfo(summonerName):
     conn, cur = dbCon()
-    sql = "SELECT teamid FROM matchhistory WHERE name=(%s)"
+    sql = "SELECT * FROM matchhistory WHERE name=%s LIMIT 10"
     cur.execute(sql, (summonerName,))
     stats = cur.fetchall()
-    print(stats)
-    print("aaaa")
     cur.close()
     conn.close()
-    stats = 1
     return stats
-
-def test():
-    tost = summonerInfo("Bassel")
-    return test
-    
