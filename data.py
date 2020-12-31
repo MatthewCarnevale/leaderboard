@@ -32,7 +32,7 @@ def rankedStatsBuilder(user):
     ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
     return summoner, ranked_stats, lolwatcher
 
-users = ["MarTea", "StinGod", "Bassel", "Trúst", "Big ItzWeird", "K3v1nRul3s", "Kareem100", "AminRhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "Shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "KerØ"]
+users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "Kerø"]
 #users = ["Bassel", "Vayler"]
 
 def matchFunc(summoner, lolwatcher):
@@ -42,7 +42,7 @@ def matchFunc(summoner, lolwatcher):
     matches = lolwatcher.match.matchlist_by_account("na1",summoner['accountId'])
     last_match = matches['matches'][0]
     gameId = last_match['gameId']
-    sql = "SELECT gameid FROM matchhistory WHERE name LIKE (%s)"
+    sql = "SELECT gameid FROM matchhistory WHERE name=%s"
     cur.execute(sql, (name,))
     pastIds = cur.fetchall()
     counter = 0
@@ -128,11 +128,38 @@ def matchFunc(summoner, lolwatcher):
                 timeline = person["timeline"]
                 role = timeline["role"]
                 lane = timeline["lane"]
-
+                #insert into matchhistory table
                 sql = "INSERT INTO matchhistory (name, teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane, gameid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cur.execute(sql, (name, teamId, championId, game_time, win, kills, deaths, assists, spree, multi, longLife, doubles, triples, quadras, pentas, bigKrit, champDmg, peter, vision, gold, spent, turrets, creeps, level, firstBlood, dragCount, baronCount, heraldCount, role, lane, gameId))
                 conn.commit()
-
+                #select existing totals
+                sql = "SELECT * FROM lifetime WHERE name=%s"
+                cur.execute(sql, (name,))
+                #add to new totals
+                oldTotals = cur.fetchall()
+                newKills = int(oldTotals[0][1]) + kills
+                newDeaths = int(oldTotals[0][2]) + deaths
+                newAssists = int(oldTotals[0][3]) + assists
+                #need total number of games for avg time to work
+                #avgTime = int()
+                if int(oldTotals[0][5]) > spree:
+                    spree = int(oldTotals[0][5])
+                newQuads = int(oldTotals[0][6]) + quadras
+                newPentas = int(oldTotals[0][7]) + pentas
+                if int(oldTotals[0][8]) > bigKrit:
+                    bigKrit = int(oldTotals[0][8])
+                totalCreeps = int(oldTotals[0][9]) + creeps
+                if firstBlood == True:
+                    firstbloods = int(oldTotals[0][10]) + 1
+                else:
+                    firstbloods = int(oldTotals[0][10])
+                newDragons = int(oldTotals[0][11]) + dragCount
+                newBarons = int(oldTotals[0][12]) + baronCount
+                newHeralds = int(oldTotals[0][13]) + heraldCount
+                #update table
+                sql = "UPDATE lifetime SET kills=%s, deaths=%s, assists=%s, longestspree=%s, quads=%s, pentas=%s, bigkrit=%s, totalcreeps=%s, firstbloods=%s, dragons=%s, barons=%s, heralds=%s WHERE name = %s"
+                cur.execute(sql, (newKills,newDeaths,newAssists, spree, newQuads, newPentas, bigKrit, totalCreeps, firstbloods, newDragons, newBarons, newHeralds, name))
+                conn.commit()
                 break
     else:
         print("not a ranked solo/duo game, skipping person")
@@ -273,23 +300,42 @@ def rankedPull():
     print("time based updating checked")
     return playerDict
 
-def statsPull():
-    conn, cur = dbCon()
-    print("pullin the matches")
-    for user in users:
-        sql = "SELECT teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane FROM matchhistory WHERE name LIKE (%s)"
-        cur.execute(sql, (user,))
-        stats = cur.fetchall()
-        print(user)
-        print(stats)
-    cur.close()
-    conn.close()
+# def statsPull():
+#     conn, cur = dbCon()
+#     print("pullin the matches")
+#     for user in users:
+#         sql = "SELECT teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane FROM matchhistory WHERE name=%s"
+#         cur.execute(sql, (user,))
+#         stats = cur.fetchall()
+#         print(user)
+#         print(stats)
+#     cur.close()
+#     conn.close()
 
 def summonerInfo(summonerName):
     conn, cur = dbCon()
-    sql = "SELECT * FROM matchhistory WHERE name=%s LIMIT 10"
+    sql = "SELECT * FROM matchhistory WHERE name=%s ORDER BY name DESC LIMIT 10"
     cur.execute(sql, (summonerName,))
     stats = cur.fetchall()
     cur.close()
     conn.close()
     return stats
+
+def lifetime(summonerName):
+    conn, cur = dbCon()
+    sql = "SELECT * FROM lifetime WHERE name=%s"
+    cur.execute(sql, (summonerName,))
+    accolades = cur.fetchall()
+    cur.close()
+    conn.close()
+    return accolades
+
+def yesterdaysDelta():
+    conn, cur = dbCon()
+    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 19"
+    cur.execute(sql)
+    yesterday = cur.fetchall()
+    yesterday.reverse()
+    cur.close()
+    conn.close()
+    return yesterday

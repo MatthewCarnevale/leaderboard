@@ -39,6 +39,7 @@
             <th onclick="sortNum('winrate')">Winrate</th>
             <th onclick="sortNum('lpdelta')">LPΔ</th>
             <th onclick="sortNum('dailywins')">daily games</th>
+            <th onclick="sortNum('yesterday')">Yesterday's Δ</th>
         </tr>
         </thead>
         <tbody id='leaderboard-body'>
@@ -53,6 +54,7 @@
             <td> {{'%0.2f' | format((value[7] / (value[7] + value[8]))*100)}}% </td>
             <td> {{value[5]}}</td>
             <td>{{value[6]}}</td>
+            <td></td>
         </tr>
         {%endfor%}
         </tbody>

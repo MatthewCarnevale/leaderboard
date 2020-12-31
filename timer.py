@@ -26,11 +26,15 @@ def timeTest():
     playerDict = constructDict(players)
     if date != oldDate[0]:
         print("making daily lp check")
-        sql = "INSERT INTO dailylp (summoner, date, lp, totalgames) VALUES (%s,%s,%s,%s);"
+        sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
+        sql2 = "SELECT lpdelta FROM playerdata WHERE name=%s ORDER BY id DESC limit 1"
         for key, value in playerDict.items():
+            cur.execute(sql2, (key,))
+            dailyDelta = cur.fetchall()
             totalGames = value[7] + value[8]
-            cur.execute(sql, (key, date, value[4], totalGames))
+            cur.execute(sql, (key, date, value[4], totalGames, dailyDelta[0]))
             conn.commit()
+
     sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
     cur.execute(sql, (date, hour, minutes))
     conn.commit()

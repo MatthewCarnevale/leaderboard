@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, name, level, tier, rank, lp, mmr, lpdelta, dailywins, wins, losses):
+    def __init__(self, name, level, tier, rank, lp, mmr, lpdelta, dailywins, wins, losses, yesterdaysDelta):
         self.name = name
         self.level = level
         self.tier = tier
@@ -10,3 +10,4 @@ class Player:
         self.dailywins = dailywins
         self.wins = wins
         self.losses = losses
+        self.yesterdaysDelta = yesterdaysDelta

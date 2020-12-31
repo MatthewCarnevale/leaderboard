@@ -5,7 +5,7 @@
     <div>
         <table>
             <thead>
-                {{name.capitalize()}}'s Match History
+                {{name}}'s Match History
                 <tr>
                     <th>Result</th>
                     <th>Team</th>
@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for tuple in recentGameStats%}
+                {% for tuple in recentGameStats %}
                 <tr>
                     <td>{{tuple[5]}}</td>
                     <td>{{tuple[2]}}</td>
@@ -36,28 +36,41 @@
         </table>
         <table>
             <thead>
-                {{name.capitalize()}}'s Accolades
+                {{name}}'s Accolades
                 <tr>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>test</th>
-                    <th>test</th>
+                    <th>KDA</th>
+                    <th>Longest Killstreak</th>
+                    <th>Quadra Kills</th>
+                    <th>Penta Kills</th>
+                    <th>Biggest Krit</th>
+                    <th>Total CS</th>
+                    <th>Firstbloods</th>
+                    <th>Total Dragons</th>
+                    <th>Total Barons</th>
+                    <th>Total Heralds</th>
                 </tr>
             </thead>
             <tbody>
+                {% for stat in accolades %}
                 <tr>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>test</td>
-                    <td>test</td>
+                    {% if stat[2] == 0%}
+                    <td>INFINITE</td>
+                    {%else%}
+                    <td>{{'%0.2f' | format((stat[1] + stat[3])/stat[2])}}</td>
+                    {%endif%}
+                    <td>{{stat[5]}}</td>
+                    <td>{{stat[6]}}</td>
+                    <td>{{stat[7]}}</td>
+                    <td>{{stat[8]}}</td>
+                    <td>{{stat[9]}}</td>
+                    <td>{{stat[10]}}</td>
+                    <td>{{stat[11]}}</td>
+                    <td>{{stat[12]}}</td>
+                    <td>{{stat[13]}}</td>
                 </tr>
+                {%endfor%}
             </tbody>
         </table>
     </div>
-    {{tuple}}
 </body>
 </html>
