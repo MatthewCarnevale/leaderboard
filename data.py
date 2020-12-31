@@ -17,7 +17,7 @@ riot = os.environ["RIOT"]
 def dbCon():
     conn = psycopg2.connect(
         host="localhost",
-        database="Marty",
+        database="postgresql-animate-31044",
         user="Marty",
         password="password")
     cur = conn.cursor()
