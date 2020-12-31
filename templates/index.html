@@ -87,7 +87,7 @@
             {%if loserDict["none"] == "none"%}
               <td>NO LOSERS QUEUE :D</td>
             {%else%}
-            {%for person, streak in loserDict%}
+            {%for person, streak in loserDict.items()%}
               <td> {{person}} with a streak of {{streak}}</td>
             {%endfor%}
             {%endif%}
