@@ -33,7 +33,6 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 
 users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "Kerø"]
-#users = ["Bassel", "Vayler"]
 
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
@@ -58,7 +57,6 @@ def matchFunc(summoner, lolwatcher):
     match_details = lolwatcher.match.by_id("na1", last_match['gameId'])
     queue_type = match_details["queueId"]
     if queue_type == 420:
-        #convert game time to minutes/seconds from seconds
         game_time = match_details["gameDuration"]
         minutes = game_time / 60
         minutes = str(int(minutes))
@@ -82,15 +80,12 @@ def matchFunc(summoner, lolwatcher):
                 #convert champ id to name from number
                 championId = person["championId"]
                 stats = person["stats"]
-                #win is False/True bool
                 win = stats["win"]
                 kills = stats["kills"]
                 deaths = stats["deaths"]
                 assists = stats["assists"]
                 spree = stats["largestKillingSpree"]
-                #multi is 0,1,2,3,4 or 5
                 multi = stats["largestMultiKill"]
-                #convert longLife to minutes/seconds from seconds
                 longLife = stats["longestTimeSpentLiving"]
                 minutes = longLife / 60
                 minutes = str(int(minutes))
@@ -112,8 +107,8 @@ def matchFunc(summoner, lolwatcher):
                 spent = stats["goldSpent"]
                 turrets = stats["turretKills"]
                 creeps = stats["totalMinionsKilled"]
+                creeps = creeps + stats["neutralMinionsKilled"]
                 level = stats["champLevel"]
-                #true/false value for first blood
                 firstBlood = stats["firstBloodKill"]
 
                 if teamId == teams[0]["teamId"]:
@@ -128,14 +123,11 @@ def matchFunc(summoner, lolwatcher):
                 timeline = person["timeline"]
                 role = timeline["role"]
                 lane = timeline["lane"]
-                #insert into matchhistory table
                 sql = "INSERT INTO matchhistory (name, teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane, gameid) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 cur.execute(sql, (name, teamId, championId, game_time, win, kills, deaths, assists, spree, multi, longLife, doubles, triples, quadras, pentas, bigKrit, champDmg, peter, vision, gold, spent, turrets, creeps, level, firstBlood, dragCount, baronCount, heraldCount, role, lane, gameId))
                 conn.commit()
-                #select existing totals
                 sql = "SELECT * FROM lifetime WHERE name=%s"
                 cur.execute(sql, (name,))
-                #add to new totals
                 oldTotals = cur.fetchall()
                 newKills = int(oldTotals[0][1]) + kills
                 newDeaths = int(oldTotals[0][2]) + deaths
@@ -156,31 +148,23 @@ def matchFunc(summoner, lolwatcher):
                 newDragons = int(oldTotals[0][11]) + dragCount
                 newBarons = int(oldTotals[0][12]) + baronCount
                 newHeralds = int(oldTotals[0][13]) + heraldCount
-                #update table
                 sql = "UPDATE lifetime SET kills=%s, deaths=%s, assists=%s, longestspree=%s, quads=%s, pentas=%s, bigkrit=%s, totalcreeps=%s, firstbloods=%s, dragons=%s, barons=%s, heralds=%s WHERE name = %s"
                 cur.execute(sql, (newKills,newDeaths,newAssists, spree, newQuads, newPentas, bigKrit, totalCreeps, firstbloods, newDragons, newBarons, newHeralds, name))
                 conn.commit()
                 break
     else:
         print("not a ranked solo/duo game, skipping person")
-    #its 30 s rn
 
 
 def playerCreate():
-    # lolwatcher = LolWatcher(riot)
-    # my_region="na1"
     playerList = []
-    # print("hello i am making riot games api calls")
+    print("hello i am making riot games api calls")
     counter = 0
     dayGames = dailyGames()
     for user in users:
         queueID = 0
-        # summoner = lolwatcher.summoner.by_name(my_region, user)
-        # ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
         summoner, ranked_stats, lolwatcher = rankedStatsBuilder(user)
-        #if statement time check for match data call?
-        if 1 == 1:
-             matchFunc(summoner, lolwatcher)
+        matchFunc(summoner, lolwatcher)
         queue = ranked_stats[queueID].get("queueType")
         if queue == "RANKED_SOLO_5x5":
             queueID = 0
@@ -189,23 +173,10 @@ def playerCreate():
         ranks = {}
         ranks[summoner.get("name")] = [ranked_stats[queueID].get("leaguePoints"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank")]
         convertedMMR = rankConversion(ranks)
-        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"), ranked_stats[queueID].get("leaguePoints"), convertedMMR, 0, dayGames[counter], ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"))
+        yesterday = yesterdaysDelta()
+        player =  Player(summoner.get("name"), summoner.get("summonerLevel"), ranked_stats[queueID].get("tier").lower().capitalize(), ranked_stats[queueID].get("rank"), ranked_stats[queueID].get("leaguePoints"), convertedMMR, 0, dayGames[counter], ranked_stats[queueID].get("wins"), ranked_stats[queueID].get("losses"), yesterday[counter][0])
         playerList.append(player)
         counter = counter+1
-        #match history stuff makes more api calls which is bad news
-        #matches = lolwatcher.match.matchlist_by_account(my_region, summoner['accountId'])
-        #print(matches)
-        """
-        for value in matches["matches"]:
-            #value is a dict of things that includes (most importantly) gameId to be used to find data related to the specific game
-            print(value)
-            #from value we need gameId, champion, queue, role, lane
-            matchDetails = lolwatcher.match.by_id(my_region, value['gameId'])
-            #from matchDetails we need gameDuration, teams, bans, participants
-            #from matchDetails teams list->dict need win, firstBlood, firstTower, firstBaron, firstDragon, firstRiftHearld... etc
-            #from bans list->dict we need champion id many times
-        """
-
     print("list of players loaded")
     return playerList
 
@@ -247,7 +218,6 @@ def rankConversion(ranks):
     return convert
 
 def dailyGames():
-    #run select query for daily games?
     conn, cur = dbCon()
     sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 19"
     cur.execute(sql)
@@ -261,13 +231,11 @@ def dailyGames():
 def constructDict(playerList):
     playerDict = {}
     for player in playerList:
-        playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.mmr, player.lpdelta, player.dailywins, player.wins, player.losses]
+        playerDict[player.name] = [player.level, player.tier, player.rank, player.lp, player.mmr, player.lpdelta, player.dailywins, player.wins, player.losses, player.yesterdaysDelta]
     print("dict of player objects made")
     return playerDict
 
 def deltaDate():
-    #select date from daily update
-    #use jinja to display date somewhere
     conn, cur = dbCon()
     fetchDate = "SELECT date FROM dailylp ORDER BY id DESC LIMIT 1"
     cur.execute(fetchDate)
@@ -283,34 +251,17 @@ def rankedPull():
     cur.execute(fetchPlayers)
     players = cur.fetchall()
     players.reverse()
+    yesterday = yesterdaysDelta()
+    counter = 0
     for dump in players:
-        player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6], dump[7], dump[8],dump[9])
+        player = Player(dump[0],dump[1],dump[2],dump[3],dump[4],dump[5],dump[6], dump[7], dump[8],dump[9],yesterday[counter][0])
         playerList.append(player)
+        counter = counter + 1
     playerDict = constructDict(playerList)
-    #really need to figure out what to do with this, its suppsosed to make things work if tables are empty.        
-    # except:
-    #     sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
-    #     cur.execute(sql, (date, hour, minutes))
-    #     conn.commit()
-    #     #TEMP TEMP TEMP TEMP TEMP BELOW TEMP TEMP TEMP TEMP
-    #     playerDict = {}
-    #     print("FUUUUUUUCK")
     cur.close()
     conn.close()
     print("time based updating checked")
     return playerDict
-
-# def statsPull():
-#     conn, cur = dbCon()
-#     print("pullin the matches")
-#     for user in users:
-#         sql = "SELECT teamid, championid, gametime, win, kills, deaths, assists, spree, multi, longlife, doubles, triples, quadras, pentas, bigkrit, totalchampdmg, towerdamage, vision, goldearned, goldspent, towerkills, cs, level, firstblood, dragons, barons, heralds, role, lane FROM matchhistory WHERE name=%s"
-#         cur.execute(sql, (user,))
-#         stats = cur.fetchall()
-#         print(user)
-#         print(stats)
-#     cur.close()
-#     conn.close()
 
 def summonerInfo(summonerName):
     conn, cur = dbCon()
@@ -339,3 +290,33 @@ def yesterdaysDelta():
     cur.close()
     conn.close()
     return yesterday
+
+def isQueue():
+    conn, cur = dbCon()
+    loserDict = {}
+    winnerDict = {}
+    sql = "SELECT win FROM matchhistory WHERE name=%s ORDER BY id DESC"
+    for user in users:
+        cur.execute(sql, (user,))
+        data = cur.fetchall()
+        lossCounter = 0
+        for value in data:
+            if value[0] == "true":
+                break
+            else:
+                lossCounter = lossCounter + 1
+        winCounter = 0
+        for value in data:
+            if value[0] == "false":
+                break
+            else:
+                winCounter = winCounter + 1
+        if lossCounter >= 3:
+            loserDict[user] = lossCounter
+        elif winCounter >= 3:
+            winnerDict[user] = winCounter
+    if len(winnerDict) == 0:
+        winnerDict["none"] = "none"
+    if len(loserDict) == 0:
+        loserDict["none"] = "none"
+    return winnerDict, loserDict

@@ -8,7 +8,7 @@ let currentSort = {
 };
 
 /**
- * @param {'mmr' | 'level' | 'wins' | 'losses' | 'lpdelta' | 'dailywins'} by
+ * @param {'mmr' | 'level' | 'wins' | 'losses' | 'lpdelta' | 'dailywins' | 'yesterday'} by
  */
 const sortNum = (by) => {
   const tempRows = Array.from(tableBody.childNodes).filter(row => !!row.dataset && !!row.dataset[by]);
@@ -77,13 +77,14 @@ function search() {
   }
 }
 
-function color() {
+function colorToday() {
   var table, tr, td, i, lpDelta;
   table = document.getElementById("leaderboard");
   tr = table.getElementsByTagName("tr");
 
   for(i=0; i< tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[7];
+    td2 = tr[i].getElementsByTagName("td")[8];
     // console.log(td) = lpdelta value per row
     if(td) {
       if(td.innerHTML < 0) {
@@ -92,10 +93,33 @@ function color() {
       } else if (td.innerHTML > 0) {
         console.log("should be green")
         td.style.backgroundColor = "green"
-       } //else {
+       } else if(td.innerHTML == 0 && td2.innerHTML > 0){
+         td.style.backgroundColor = "yellow"
+       }
+    }
+  }
+}
+colorToday();
+
+function colorYesterday() {
+  var table, tr, td, i, lpDelta;
+  table = document.getElementById("leaderboard");
+  tr = table.getElementsByTagName("tr");
+
+  for(i=0; i< tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[9];
+    // console.log(td) = lpdelta value per row
+    if(td) {
+      if(td.innerHTML < 0) {
+        console.log("should be red")
+        td.style.backgroundColor = "red"
+      } else if (td.innerHTML > 0) {
+        console.log("should be green")
+        td.style.backgroundColor = "green"
+       } //else if (td.innerHTML == 0) {
          //td.style.backgroundColor = "yellow"
        //}
     }
   }
 }
-color();
+colorYesterday()

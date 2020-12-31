@@ -13,14 +13,12 @@
       <table id="rnk" class="rnk">
         <thead>
           <tr>
-            <!-- <th>toggle</th> -->
             <th>Rnk#</th>
           </tr>
         </thead>
         <tbody id='rnk-body'>
         {% for key, value in playerDict.items()%}
         <tr>
-        <!-- <td><input class="checkbox" type="checkbox"></td> -->
         <td>{{count.value}}</td>
         {% set count.value = count.value + 1 %}
         </tr>
@@ -44,7 +42,7 @@
         </thead>
         <tbody id='leaderboard-body'>
         {% for key, value in playerDict.items()%}
-        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8])}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} class='leaderboard-row'>
+        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8])}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
             <td> <a class="opgg" href="http://localhost:8080/{{key}}" target="_blank">{{key}}</a></td>
             <td> {{value[0]}}</td>
             <td> <a class="opgg" href="https://na.op.gg/summoner/userName={{key}}" target="_blank"> {{value[1]}} {{value[2]}} {{value[3]}}LP </a></td>
@@ -54,12 +52,50 @@
             <td> {{'%0.2f' | format((value[7] / (value[7] + value[8]))*100)}}% </td>
             <td> {{value[5]}}</td>
             <td>{{value[6]}}</td>
-            <td></td>
+            <td>{{value[9]}}</td>
         </tr>
         {%endfor%}
         </tbody>
     </table>
+    <table class="leaderboard">
+      <thead>
+        <tr>
+          <th>WINNERS QUEUE PLAYERS</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          {%if winnerDict["none"] == "none"%}
+            <td>NO WINNERS QUEUE D:</td>
+          {%else%}
+          {%for person, streak in winnerDict.items()%}
+            <td> {{person}} with a streak of {{streak}}</td>
+          {%endfor%}
+          {%endif%}
+        </tr>
+        </tbody>
+      </table>
+
+      <table class="leaderboard">
+        <thead>
+          <tr>
+            <th>LOSERS QUEUE PLAYERS</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            {%if loserDict["none"] == "none"%}
+              <td>NO LOSERS QUEUE :D</td>
+            {%else%}
+            {%for person, streak in loserDict%}
+              <td> {{person}} with a streak of {{streak}}</td>
+            {%endfor%}
+            {%endif%}
+          </tr>
+          </tbody>
+        </table>
     </div>
+
     Thanks to KC (Kalichi) for helping with a lot of the javascript stuff :D
 
     <script src={{ url_for('static', filename='script.js') }}></script>
