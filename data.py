@@ -13,6 +13,7 @@ from player import Player
 dotenv_path = join(dirname(__file__), "keys.env")
 load_dotenv(dotenv_path)
 riot = os.environ["RIOT"]
+
 def dbCon():
     conn = psycopg2.connect(
         host="localhost",
