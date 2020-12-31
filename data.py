@@ -19,7 +19,8 @@ def dbCon():
         host="localhost",
         database="postgresql-animate-31044",
         user="Marty",
-        password="password")
+        password="password",
+        port=5432)
     cur = conn.cursor()
     print("db connection established")
     return conn, cur
