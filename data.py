@@ -17,8 +17,8 @@ riot = os.environ["RIOT"]
 def dbCon():
     conn = psycopg2.connect(
         host="localhost",
-        database="leaderboard",
-        user="postgres",
+        database="Marty",
+        user="Marty",
         password="password")
     cur = conn.cursor()
     print("db connection established")
