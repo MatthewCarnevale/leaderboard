@@ -24,7 +24,7 @@ def dbCon():
     cur = conn.cursor()
     print("db connection established")
     return conn, cur
-
+#a
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
