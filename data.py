@@ -17,7 +17,7 @@ riot = os.environ["RIOT"]
 def dbCon():
     conn = psycopg2.connect(
         host="localhost",
-        database="postgresql-animate-31044",
+        database="Marty",
         user="Marty",
         password="password",
         port=5432)
@@ -34,7 +34,7 @@ def rankedStatsBuilder(user):
     ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
     return summoner, ranked_stats, lolwatcher
 
-users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin Vi", "Kerø"]
+users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
 
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()

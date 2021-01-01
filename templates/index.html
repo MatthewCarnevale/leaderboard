@@ -42,14 +42,14 @@
         </thead>
         <tbody id='leaderboard-body'>
         {% for key, value in playerDict.items()%}
-        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8])}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
+        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8]+1)}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
             <td> <a class="opgg" href="http://localhost:8080/{{key}}" target="_blank">{{key}}</a></td>
             <td> {{value[0]}}</td>
             <td> <a class="opgg" href="https://na.op.gg/summoner/userName={{key}}" target="_blank"> {{value[1]}} {{value[2]}} {{value[3]}}LP </a></td>
             <td>{{value[7]}}</td>
             <td> {{value[8]}}</td>
             <td> {{value[7] + value[8]}}</td>
-            <td> {{'%0.2f' | format((value[7] / (value[7] + value[8]))*100)}}% </td>
+            <td> {{'%0.2f' | format((value[7] / (value[7] + value[8]+1))*100)}}% </td>
             <td> {{value[5]}}</td>
             <td>{{value[6]}}</td>
             <td>{{value[9]}}</td>

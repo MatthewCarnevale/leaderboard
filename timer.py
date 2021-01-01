@@ -28,9 +28,13 @@ def timeTest():
         print("making daily lp check")
         sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
         sql2 = "SELECT lpdelta FROM playerdata WHERE name=%s ORDER BY id DESC limit 1"
+        print(playerDict.items())
         for key, value in playerDict.items():
+            print(key)
+            print(value)
             cur.execute(sql2, (key,))
             dailyDelta = cur.fetchall()
+            print(dailyDelta)
             totalGames = value[7] + value[8]
             cur.execute(sql, (key, date, value[4], totalGames, dailyDelta[0]))
             conn.commit()
