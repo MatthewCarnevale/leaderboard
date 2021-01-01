@@ -14,16 +14,15 @@ dotenv_path = join(dirname(__file__), "keys.env")
 load_dotenv(dotenv_path)
 riot = os.environ["RIOT"]
 
-SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/'Marty'"
+SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/Marty"
 
 def dbCon():
-    # conn = psycopg2.connect(
-    #     host="localhost",
-    #     database="Marty",
-    #     user="Marty",
-    #     password="password",
-    #     port=5432)
-    db = create_engine(SQLALCHEMY_DATABASE_URI)
+    conn = psycopg2.connect(
+        host="localhost",
+        database="Marty",
+        user="Marty",
+        password="password",
+        port=5432)
     cur = conn.cursor()
     print("db connection established")
     return conn, cur
