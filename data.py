@@ -19,8 +19,8 @@ SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/Marty"
 
 def dbCon():
     conn = psycopg2.connect(
-        host="postgresql-rectangular-69444",
-        database="DATABASE",
+        host="localhost",
+        database="da8f5usa6fkkqs",
         user="kimbpkjanvcdki",
         password="",
         port=5432)
