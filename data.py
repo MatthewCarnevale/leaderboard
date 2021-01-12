@@ -44,7 +44,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["Bassel", "Big Itzweird", "Trúst", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist"]
+users = ["Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]

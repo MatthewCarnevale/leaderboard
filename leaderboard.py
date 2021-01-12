@@ -20,7 +20,7 @@ def index():
         loserDict = loserDict
     )
 
-@app.route("/<SUMMONER>")
+@app.route("https://still-ridge-29339.herokuapp.com/<SUMMONER>")
 def summoner_index(SUMMONER):
     recentGameStats = summonerInfo(SUMMONER)
     accolades = lifetime(SUMMONER)

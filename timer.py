@@ -34,6 +34,7 @@ def timeTest():
             print(value)
             cur.execute(sql2, (key,))
             dailyDelta = cur.fetchall()
+            print("ye right here")
             print(dailyDelta)
             totalGames = value[7] + value[8]
             cur.execute(sql, (key, date, value[4], totalGames, dailyDelta[0]))
