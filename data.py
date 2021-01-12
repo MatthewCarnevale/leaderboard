@@ -15,15 +15,17 @@ dotenv_path = join(dirname(__file__), "keys.env")
 load_dotenv(dotenv_path)
 riot = os.environ["RIOT"]
 
-SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/Marty"
+#SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/Marty"
+DATABASE_URL="$(heroku config:get DATABASE_URL -a still-ridge-29339) python leaderboard.py"
 
 def dbCon():
-    conn = psycopg2.connect(
-        host="localhost",
-        database="da8f5usa6fkkqs",
-        user="kimbpkjanvcdki",
-        password="",
-        port=5432)
+    # conn = psycopg2.connect(
+    #     host="localhost",
+    #     database="da8f5usa6fkkqs",
+    #     user="kimbpkjanvcdki",
+    #     password="",
+    #     port=5432)
+    conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     print("db connection established")
     return conn, cur
