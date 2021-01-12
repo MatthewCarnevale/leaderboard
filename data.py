@@ -34,15 +34,18 @@ def rankedStatsBuilder(user):
     summoner = lolwatcher.summoner.by_name(my_region, user)
     print("making ranked stats api call")
     ranked_stats = lolwatcher.league.by_summoner(my_region, summoner['id'])
+    #print(ranked_stats)
     return summoner, ranked_stats, lolwatcher
-
-users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-
+#ranked stats dont exist for players without 10 games played
+#users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
+users = ["Bassel", "Big Itzweird", "Trúst", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
+    print(name)
     print("making matches api call")
     matches = lolwatcher.match.matchlist_by_account("na1",summoner['accountId'])
+    #print(matches)
     last_match = matches['matches'][0]
     gameId = last_match['gameId']
     sql = "SELECT gameid FROM matchhistory WHERE name=%s"
@@ -57,8 +60,10 @@ def matchFunc(summoner, lolwatcher):
             counter = counter+1
         except:
             counter = counter+1
+    #print(name)
     print("making match details api call")
     match_details = lolwatcher.match.by_id("na1", last_match['gameId'])
+    #print(match_details)
     queue_type = match_details["queueId"]
     if queue_type == 420:
         game_time = match_details["gameDuration"]
@@ -169,6 +174,8 @@ def playerCreate():
         queueID = 0
         summoner, ranked_stats, lolwatcher = rankedStatsBuilder(user)
         matchFunc(summoner, lolwatcher)
+        #print(ranked_stats)
+        #print(ranked_stats[queueID])
         queue = ranked_stats[queueID].get("queueType")
         if queue == "RANKED_SOLO_5x5":
             queueID = 0
