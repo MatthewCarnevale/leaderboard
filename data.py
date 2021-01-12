@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 import enum
 import time
 from player import Player
+from sqlalchemy import create_engine
 
 dotenv_path = join(dirname(__file__), "keys.env")
 load_dotenv(dotenv_path)
@@ -26,7 +27,10 @@ def dbCon():
     cur = conn.cursor()
     print("db connection established")
     return conn, cur
-#s
+    # db_string = "postgresql://Marty:password@localhost/Marty"
+    # db = create_engine(db_string)
+    # return db
+
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
@@ -331,3 +335,7 @@ def isQueue():
     if len(loserDict) == 0:
         loserDict["none"] = "none"
     return winnerDict, loserDict
+
+# db = dbCon()
+# test = "no"
+# db.execute("INSERT INTO poopy (name) VALUES (%test)")
