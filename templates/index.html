@@ -71,7 +71,9 @@
         {%endfor%}
         </tbody>
     </table>
-    <table class="leaderboard">
+    <img src="static/meme.png" class="meme">
+    <br>
+    <table class="queue">
       <thead>
         <tr>
           <th>WINNERS QUEUE PLAYERS</th>
@@ -90,7 +92,7 @@
         </tbody>
       </table>
 
-      <table class="leaderboard">
+      <table class="queue">
         <thead>
           <tr>
             <th>LOSERS QUEUE PLAYERS</th>
@@ -111,6 +113,7 @@
     </div>
 
     Thanks to KC (Kalichi) for helping with a lot of the javascript stuff :D
+    <br>
 
     <script src={{ url_for('static', filename='script.js') }}></script>
   </body>

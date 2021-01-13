@@ -71,13 +71,44 @@
     text-decoration: none;
     color: black;
 }
-.losers{
-    float:right;
-    position: static;
+.queue {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
+    display: inline-block;
 }
-.winners {
-    float:right;
-    position: static;
+.queue thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+.queue th, td {
+    padding: 12px 15px;
+}
+.queue tbody tr {
+    border-bottom: 1px solid #dddddd;
+    height: 20px;
+}
+
+.queue tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.queue tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+/* .leaderboard tbody tr {
+    height: 44px;
+} */
+.queue th, tr, td {
+    border: 1px solid black;
+}
+
+.meme {
+    width: 30%;
+    height: 50%;
 }
 /* .checkbox {
     transform: scale(0.5)
