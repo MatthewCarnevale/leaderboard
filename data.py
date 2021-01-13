@@ -288,7 +288,7 @@ def dailyGames():
     totalgames = cur.fetchall()
     totalgames.reverse()
     dGames = []
-    for i in range(0,10):
+    for i in range(0,11):
         dGames.append(totalgames[i][0])
     return dGames
 
@@ -335,6 +335,9 @@ def summonerInfo(summonerName):
     #HERE
     cur.execute(sql, (summonerName,))
     stats = cur.fetchall()
+    print(stats)
+    stats.reverse()
+    print(stats)
     cur.close()
     conn.close()
     return stats
