@@ -21,7 +21,7 @@
             <tbody>
                 {% for tuple in recentGameStats %}
                 <tr>
-                    {%if tuple[5] == "true"%}
+                    {%if tuple[5] == True%}
                     <td>W</td>
                     {%else%}
                     <td>L</td>
