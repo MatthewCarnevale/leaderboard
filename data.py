@@ -372,4 +372,4 @@ def isQueue():
 # db = dbCon()
 # test = "no"
 # db.execute("INSERT INTO poopy (name) VALUES (%test)")
-buildTables()
+#buildTables()
