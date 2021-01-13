@@ -60,8 +60,8 @@
                 </tr>
             </thead>
             <tbody>
-                {% for stat in accolades %}
                 <tr>
+                {% for stat in accolades %}
                     {% if stat[2] == 0%}
                     <td>INFINITE</td>
                     {%else%}
@@ -76,8 +76,8 @@
                     <td>{{stat[11]}}</td>
                     <td>{{stat[12]}}</td>
                     <td>{{stat[13]}}</td>
-                </tr>
                 {%endfor%}
+                </tr>
             </tbody>
         </table>
     </div>
