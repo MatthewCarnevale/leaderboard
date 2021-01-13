@@ -15,7 +15,6 @@ dotenv_path = join(dirname(__file__), "keys.env")
 load_dotenv(dotenv_path)
 riot = os.environ["RIOT"]
 
-#SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/Marty"
 DATABASE_URL= os.environ["DATABASE_URL"]
 
 def dbCon():
@@ -36,22 +35,21 @@ def buildTables():
     cur.execute(sql)
     conn.commit()
     sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid Integer, championid Integer, gametime VARCHAR(255), win Boolean, kills Integer, deaths Integer, assists Integer, spree Integer, multi Integer, longlife VARCHAR(255), doubles Integer, triples Integer, quadras Integer, pentas Integer, bigkrit Integer, totalchampdmg Integer, towerdamage Integer, vision Integer, goldearned Integer, goldspent Integer, towerkills Integer, cs Integer, level Integer, firstblood Boolean, dragons Integer, barons Integer, heralds Integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255))"
-
     cur.execute(sql)
     conn.commit()
     sql = "CREATE TABLE IF NOT EXISTS playerdata (id Serial, name VARCHAR(255), level Integer, tier VARCHAR(255), rank VARCHAR(255), lp Integer, mmr Integer, lpdelta Integer, dailygames Integer, wins Integer, losses Integer)"
     cur.execute(sql)
     conn.commit()
     ##logic for adding new player to table
-    sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Xerous',0,0,0,0,0,0,0,0,0,0,0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Xerous','01/01/21',0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Xerous',0,0,0,0,0,0,0,0,0)"
-    cur.execute(sql)
-    conn.commit()
+    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Xerous',0,0,0,0,0,0,0,0,0,0,0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Xerous','01/01/21',0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Xerous',0,0,0,0,0,0,0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
     ##logic for dumping tables and starting from scratch
     # sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
     # cur.execute(sql)
@@ -68,6 +66,7 @@ def buildTables():
     #     sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES (%s,0,0,0,0,0,0,0,0,0)"
     #     cur.execute(sql,(user,))
     #     conn.commit()
+    
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
