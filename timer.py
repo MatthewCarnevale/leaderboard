@@ -30,12 +30,10 @@ def timeTest():
         sql2 = "SELECT lpdelta FROM playerdata WHERE name=%s ORDER BY id DESC limit 1"
         print(playerDict.items())
         for key, value in playerDict.items():
-            print(key)
-            print(value)
+            if key == "Trúst":
+                key = "Trust"
             cur.execute(sql2, (key,))
             dailyDelta = cur.fetchall()
-            print("ye right here")
-            print(dailyDelta)
             totalGames = value[7] + value[8]
             cur.execute(sql, (key, date, value[4], totalGames, dailyDelta[0]))
             conn.commit()
@@ -46,12 +44,12 @@ def timeTest():
     #get lp from playerDict, compare it to select query from dailylp lp value, insert new value as lpdelta
     counter = 0
     for key, value in playerDict.items():
-        sql = "SELECT lp FROM dailylp ORDER BY id DESC LIMIT 8"
+        sql = "SELECT lp FROM dailylp ORDER BY id DESC LIMIT 10"
         cur.execute(sql)
         dailyLP = cur.fetchall()
         dailyLP.reverse()
         startingMmr = dailyLP[counter][0]
-        sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 8"
+        sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 10"
         cur.execute(sql)
         dailyGames = cur.fetchall()
         dailyGames.reverse()
@@ -59,6 +57,9 @@ def timeTest():
         counter = counter+1
         delta = value[4] - startingMmr
         sql = "INSERT INTO playerdata(name,level,tier,rank,lp, mmr, lpdelta, dailygames, wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+        if key == "Trúst":
+            key = "Trust"
+        #HERE
         cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4], delta, totalDayGames, value[7],value[8]))
         conn.commit()
 timeTest()

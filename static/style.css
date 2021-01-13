@@ -73,9 +73,11 @@
 }
 .losers{
     float:right;
+    position: static;
 }
 .winners {
     float:right;
+    position: static;
 }
 /* .checkbox {
     transform: scale(0.5)

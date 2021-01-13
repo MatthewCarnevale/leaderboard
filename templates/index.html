@@ -36,14 +36,17 @@
             <th onclick="sortNum('losses')">Losses</th>
             <th onclick="sortNum('totalgames')">Total Games</th>
             <th onclick="sortNum('winrate')">Winrate</th>
-            <th onclick="sortNum('lpdelta')">LPΔ</th>
+            <th onclick="sortNum('lpdelta')">ΔLP</th>
             <th onclick="sortNum('dailywins')">daily games</th>
-            <th onclick="sortNum('yesterday')">Yesterday's Δ</th>
+            <th onclick="sortNum('yesterday')">Yesterday's ΔLP</th>
         </tr>
         </thead>
         <tbody id='leaderboard-body'>
         {% for key, value in playerDict.items()%}
         <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8]+1)}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
+            {%if key == "Trust"%}
+            {%set key = "Trúst"%}
+            {%endif%}
             <td> <a class="opgg" href="https://still-ridge-29339.herokuapp.com/{{key}}" target="_blank">{{key}}</a></td>
             <!-- <td> <a class="opgg" href="localhost:8080/{{key}}" target="_blank">{{key}}</a></td> -->
             <td> {{value[0]}}</td>
