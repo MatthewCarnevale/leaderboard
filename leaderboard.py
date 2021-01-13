@@ -24,6 +24,7 @@ def index():
 def summoner_index(SUMMONER):
     recentGameStats = summonerInfo(SUMMONER)
     accolades = lifetime(SUMMONER)
+    print(accolades)
     if SUMMONER not in users:
         return flask.render_template("notfound.html")
     else:
