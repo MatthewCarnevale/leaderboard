@@ -32,7 +32,38 @@ def dbCon():
     # db_string = "postgresql://Marty:password@localhost/Marty"
     # db = create_engine(db_string)
     # return db
+def buildTables():
+    conn, cur = dbCon()
+    # for user in users:
+    sql = "CREATE TABLE IF NOT EXISTS lifetime (name VARCHAR(255), kills Integer, deaths Integer, assists Integer, avgtime Integer, longestspree Integer, quads Integer, pentas Integer, bigkrit Integer, totalcreeps Integer, firstbloods Integer, dragons Integer, barons Integer, heralds Integer)"
+    cur.execute(sql)
+    conn.commit()
+    sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, summoner VARCHAR(255), date Date, lp Integer, totalgames Integer, yesterdaysdelta Integer)"
+    cur.execute(sql)
+    conn.commit()
+    sql = "CREATE TABLE IF NOT EXISTS timetracker (id Serial, date Date, hour Integer, minutes Integer)"
+    cur.execute(sql)
+    conn.commit()
+    sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid Integer, championid Integer, gametime VARCHAR(255), win Boolean, kills Integer, deaths Integer, assists Integer, spree Integer, multi Integer, longlife VARCHAR(255), doubles Integer, triples Integer, quadras Integer, pentas Integer, bigkrit Integer, totalchampdmg Integer, towerdamage Integer, vision Integer, goldearned Integer, goldspent Integer, towerkills Integer, cs Integer, level Integer, firstblood Boolean, dragons Integer, barons Integer, heralds Integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255))"
 
+    cur.execute(sql)
+    conn.commit()
+    sql = "CREATE TABLE IF NOT EXISTS playerdata (id Serial, name VARCHAR(255), level Integer, tier VARCHAR(255), rank VARCHAR(255), lp Integer, mmr Integer, lpdelta Integer, dailygames Integer, wins Integer, losses Integer)"
+    cur.execute(sql)
+    conn.commit()
+    sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
+    cur.execute(sql)
+    conn.commit()
+    for user in users:
+        sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES (%s,0,0,0,0,0,0,0,0,0,0,0,0,0)"
+        cur.execute(sql,(user,))
+        conn.commit()
+        sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES (%s,'01/01/21',0,0,0)"
+        cur.execute(sql,(user,))
+        conn.commit()
+        sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES (%s,0,0,0,0,0,0,0,0,0)"
+        cur.execute(sql,(user,))
+        conn.commit()
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
@@ -44,7 +75,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist"]
+users = ["Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist", "Kareem100"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
@@ -341,3 +372,4 @@ def isQueue():
 # db = dbCon()
 # test = "no"
 # db.execute("INSERT INTO poopy (name) VALUES (%test)")
+buildTables()
