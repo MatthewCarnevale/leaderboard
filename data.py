@@ -16,7 +16,7 @@ load_dotenv(dotenv_path)
 riot = os.environ["RIOT"]
 
 #SQLALCHEMY_DATABASE_URI = "postgresql://Marty:password@localhost/Marty"
-DATABASE_URL="postgres://kimbpkjanvcdki:36c4f96514acd71ae49f455189c88800f94f5e0774fa3945865f35c80ef28a8c@ec2-52-200-16-99.compute-1.amazonaws.com:5432/da8f5usa6fkkqs"
+DATABASE_URL= os.environ["PSQL"]
 
 def dbCon():
     conn = psycopg2.connect(DATABASE_URL)
