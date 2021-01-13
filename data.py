@@ -362,13 +362,13 @@ def isQueue():
         data = cur.fetchall()
         lossCounter = 0
         for value in data:
-            if value[0] == "true":
+            if value[0] == "True":
                 break
             else:
                 lossCounter = lossCounter + 1
         winCounter = 0
         for value in data:
-            if value[0] == "false":
+            if value[0] == "False":
                 break
             else:
                 winCounter = winCounter + 1
