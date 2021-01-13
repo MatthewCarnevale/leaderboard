@@ -29,10 +29,10 @@ def buildTables():
     sql = "CREATE TABLE IF NOT EXISTS lifetime (name VARCHAR(255), kills Integer, deaths Integer, assists Integer, avgtime Integer, longestspree Integer, quads Integer, pentas Integer, bigkrit Integer, totalcreeps Integer, firstbloods Integer, dragons Integer, barons Integer, heralds Integer)"
     cur.execute(sql)
     conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, summoner VARCHAR(255), date Date, lp Integer, totalgames Integer, yesterdaysdelta Integer)"
+    sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, summoner VARCHAR(255), date VARCHAR(255), lp Integer, totalgames Integer, yesterdaysdelta Integer)"
     cur.execute(sql)
     conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS timetracker (id Serial, date Date, hour Integer, minutes Integer)"
+    sql = "CREATE TABLE IF NOT EXISTS timetracker (id Serial, date VARCHAR(255), hour Integer, minutes Integer)"
     cur.execute(sql)
     conn.commit()
     sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid Integer, championid Integer, gametime VARCHAR(255), win Boolean, kills Integer, deaths Integer, assists Integer, spree Integer, multi Integer, longlife VARCHAR(255), doubles Integer, triples Integer, quadras Integer, pentas Integer, bigkrit Integer, totalchampdmg Integer, towerdamage Integer, vision Integer, goldearned Integer, goldspent Integer, towerkills Integer, cs Integer, level Integer, firstblood Boolean, dragons Integer, barons Integer, heralds Integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255))"

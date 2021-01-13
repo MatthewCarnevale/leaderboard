@@ -24,6 +24,8 @@ def timeTest():
     print("doin the update")
     players = playerCreate()
     playerDict = constructDict(players)
+    print(date)
+    print(oldDate[0])
     if date != oldDate[0]:
         print("making daily lp check")
         sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
