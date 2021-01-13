@@ -47,7 +47,7 @@
             {%if key == "Trust"%}
             {%set key = "Trúst"%}
             {%endif%}
-            <td> <a class="opgg" href="https://still-ridge-29339.herokuapp.com/{{key}}" target="_blank">{{key}}</a></td>
+            <td> <a class="opgg" href="https://still-ridge-29339.herokuapp.com{{key}}" target="_blank">{{key}}</a></td>
             <!-- <td> <a class="opgg" href="localhost:8080/{{key}}" target="_blank">{{key}}</a></td> -->
             <td> {{value[0]}}</td>
             <td> <a class="opgg" href="https://na.op.gg/summoner/userName={{key}}" target="_blank"> {{value[1]}} {{value[2]}} {{value[3]}}LP </a></td>
