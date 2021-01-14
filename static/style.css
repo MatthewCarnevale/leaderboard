@@ -111,6 +111,9 @@
     width: 30%;
     height: 50%;
 }
+.test {
+    background-color: orangered;
+}
 /* .checkbox {
     transform: scale(0.5)
 } */

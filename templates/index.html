@@ -3,7 +3,6 @@
          <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}/>
          <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     </head>
-<body>
     <ul>
       <li>The LPΔ value is being compared to players lp from {{date}} at 1:00 am</li>
       <li>You can click usernames to go to mini match history information page</li>
@@ -75,6 +74,7 @@
     <!-- <img src="static/meme.png" class="meme"> -->
   </div>
     <br>
+  <div>
     <table class="queue">
       <thead>
         <tr>
@@ -116,6 +116,6 @@
             {%endif%}
           </tbody>
         </table>
+      </div>
     <script src={{ url_for('static', filename='script.js') }}></script>
-  </body>
 </HTML>
