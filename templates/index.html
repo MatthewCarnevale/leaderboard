@@ -11,7 +11,7 @@
       <li>All stats are for solo/duo queue only</li>
       <li>Players must have finished ranked placement games to be on the list.</li>
       <li>Data and lifetime stats are being tracked from 3:50 AM on January 13th 2021. Games played before this time DO NOT COUNT FOR LIFETIME STATS</li>
-      <li>Stats are updated every 30 minutes (at :00 and :30). In the future there will be a force update button à la op.gg</li>
+      <li>Stats are updated every 20 minutes (at :00, :20, and :40). In the future there will be a force update button à la op.gg</li>
     </ul>
     <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names..">
     <div>
@@ -48,7 +48,7 @@
         </thead>
         <tbody id='leaderboard-body'>
         {% for key, value in playerDict.items()%}
-        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8]+1)}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
+        <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8])}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
             {%if key == "Trust"%}
             {%set key = "Trúst"%}
             {%endif%}
