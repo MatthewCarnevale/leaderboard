@@ -62,7 +62,7 @@
             {% if value[7] + value[8] == 0%}
             <td>NO LOSSES GOODE PLAYER</td>
             {%else%}
-            <td> {{'%0.2f' | format((value[7] / (value[7] + value[8]))*100)}}% </td>
+            <td> {{'%0.2f' | format((value[7] / (value[7] + value[8])*100)}}% </td>
             {%endif%}
             <td> {{value[5]}}</td>
             <td>{{value[6]}}</td>
