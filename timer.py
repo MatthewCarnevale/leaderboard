@@ -24,9 +24,8 @@ def timeTest():
     print("doin the update")
     players = playerCreate()
     playerDict = constructDict(players)
-    print(date)
-    print(oldDate[0])
-    if date != oldDate[0]:
+    #because the Heroku psql server is in UTC time this hour == 5 is used to compensate and make update happen at midnight EST
+    if date != oldDate[0] and hour == 5:
         print("making daily lp check")
         sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
         sql2 = "SELECT lpdelta FROM playerdata WHERE name=%s ORDER BY id DESC limit 1"
