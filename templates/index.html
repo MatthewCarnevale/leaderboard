@@ -81,15 +81,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
           {%if winnerDict["none"] == "none"%}
+          <tr>
             <td>NO WINNERS QUEUE D:</td>
+          </tr>
           {%else%}
           {%for person, streak in winnerDict.items()%}
+          <tr>
             <td> {{person}} with a streak of {{streak}}</td>
+          </tr>
           {%endfor%}
           {%endif%}
-        </tr>
         </tbody>
       </table>
 
@@ -100,15 +102,17 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
             {%if loserDict["none"] == "none"%}
+            <tr>
               <td>NO LOSERS QUEUE :D</td>
+            </tr>
             {%else%}
             {%for person, streak in loserDict.items()%}
+            <tr>
               <td> {{person}} with a streak of {{streak}}</td>
+            </tr>
             {%endfor%}
             {%endif%}
-          </tr>
           </tbody>
         </table>
     <br>
