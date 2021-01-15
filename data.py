@@ -328,7 +328,7 @@ def rankedPull():
 
 def summonerInfo(summonerName):
     conn, cur = dbCon()
-    sql = "SELECT * FROM matchhistory WHERE name=%s ORDER BY id DESC LIMIT 10"
+    sql = "SELECT * FROM matchhistory WHERE name=%s ORDER BY id ASC LIMIT 10"
     if summonerName == "Trúst":
         summonerName = "Trust"
     #HERE
