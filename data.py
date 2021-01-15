@@ -334,9 +334,9 @@ def summonerInfo(summonerName):
     #HERE
     cur.execute(sql, (summonerName,))
     stats = cur.fetchall()
-    print(stats)
-    stats.reverse()
-    print(stats)
+    # print(stats)
+    # stats.reverse()
+    # print(stats)
     cur.close()
     conn.close()
     return stats
