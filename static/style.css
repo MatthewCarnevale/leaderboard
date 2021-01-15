@@ -111,6 +111,9 @@
     width: 30%;
     height: 50%;
 }
+.pointer {
+    cursor: pointer;
+}
 .test {
     background-color: orangered;
 }

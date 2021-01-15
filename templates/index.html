@@ -4,7 +4,7 @@
          <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     </head>
     <ul>
-      <li>The LPΔ value is being compared to players lp from {{date}} at 1:00 am</li>
+      <li>The ΔLP value is being compared to players lp from {{date}} at 1:00 am</li>
       <li>You can click usernames to go to mini match history information page</li>
       <li>You can click someones rank to go to op.gg for that person</li>
       <li>All stats are for solo/duo queue only</li>
@@ -34,16 +34,16 @@
       <table id="leaderboard" class="leaderboard">
         <thead>
         <tr>
-            <th onclick="sortAlpha('name')">Name </th>
-            <th onclick="sortNum('level')">Level</th>
-            <th onclick="sortNum('mmr')">Tier</th>
-            <th onclick="sortNum('wins')">Wins</th>
-            <th onclick="sortNum('losses')">Losses</th>
-            <th onclick="sortNum('totalgames')">Total Games</th>
-            <th onclick="sortNum('winrate')">Winrate</th>
-            <th onclick="sortNum('lpdelta')">ΔLP</th>
-            <th onclick="sortNum('dailywins')">daily games</th>
-            <th onclick="sortNum('yesterday')">Yesterday's ΔLP</th>
+            <th class="pointer" onclick="sortAlpha('name')">Name </th>
+            <th class="pointer" onclick="sortNum('level')">Level</th>
+            <th class="pointer" onclick="sortNum('mmr')">Tier</th>
+            <th class="pointer" onclick="sortNum('wins')">Wins</th>
+            <th class="pointer" onclick="sortNum('losses')">Losses</th>
+            <th class="pointer" onclick="sortNum('totalgames')">Total Games</th>
+            <th class="pointer" onclick="sortNum('winrate')">Winrate</th>
+            <th class="pointer" onclick="sortNum('lpdelta')">ΔLP</th>
+            <th class="pointer" onclick="sortNum('dailywins')">daily games</th>
+            <th class="pointer" onclick="sortNum('yesterday')">Yesterday's ΔLP</th>
         </tr>
         </thead>
         <tbody id='leaderboard-body'>
