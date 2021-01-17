@@ -78,7 +78,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID"]
+users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
@@ -282,12 +282,12 @@ def rankConversion(ranks):
 
 def dailyGames():
     conn, cur = dbCon()
-    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 12"
+    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 13"
     cur.execute(sql)
     totalgames = cur.fetchall()
     totalgames.reverse()
     dGames = []
-    for i in range(0,12):
+    for i in range(0,13):
         dGames.append(totalgames[i][0])
     return dGames
 
@@ -310,7 +310,7 @@ def rankedPull():
     conn, cur = dbCon()
     print("pullin the ranks")
     playerList = []
-    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 12"
+    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 13"
     cur.execute(fetchPlayers)
     players = cur.fetchall()
     players.reverse()
@@ -355,7 +355,7 @@ def lifetime(summonerName):
 
 def yesterdaysDelta():
     conn, cur = dbCon()
-    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 12"
+    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 13"
     cur.execute(sql)
     yesterday = cur.fetchall()
     yesterday.reverse()
