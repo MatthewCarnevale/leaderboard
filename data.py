@@ -41,16 +41,16 @@ def buildTables():
     cur.execute(sql)
     conn.commit()
     ##logic for adding new player to table
-    sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Stin God',0,0,0,0,0,0,0,0,0,0,0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Stin God','01/01/21',0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Stin God',0,0,0,0,0,0,0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    #logic for dumping tables and starting from scratch
+    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Stin God',0,0,0,0,0,0,0,0,0,0,0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Stin God','01/01/21',0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Stin God',0,0,0,0,0,0,0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    ##logic for dumping tables and starting from scratch
     # sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
     # cur.execute(sql)
     # conn.commit()
