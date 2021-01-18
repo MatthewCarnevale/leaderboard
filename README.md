@@ -1,7 +1,7 @@
 hello :3
-#Site link
+# Site link
 http://martyleaderboard.herokuapp.com/
 
-#Contributers
+# Contributers
 Marty Carnavale
 Ido Tanne
