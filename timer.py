@@ -47,12 +47,12 @@ def timeTest():
     #get lp from playerDict, compare it to select query from dailylp lp value, insert new value as lpdelta
     counter = 0
     for key, value in playerDict.items():
-        sql = "SELECT lp FROM dailylp ORDER BY id DESC LIMIT 13"
+        sql = "SELECT lp FROM dailylp ORDER BY id DESC LIMIT 14"
         cur.execute(sql)
         dailyLP = cur.fetchall()
         dailyLP.reverse()
         startingMmr = dailyLP[counter][0]
-        sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 13"
+        sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 14"
         cur.execute(sql)
         dailyGames = cur.fetchall()
         dailyGames.reverse()
