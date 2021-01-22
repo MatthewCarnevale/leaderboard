@@ -41,15 +41,15 @@ def buildTables():
     cur.execute(sql)
     conn.commit()
     ##logic for adding new player to table
-    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Stin God',0,0,0,0,0,0,0,0,0,0,0,0,0)"
-    # cur.execute(sql)
-    # conn.commit()
-    # sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Stin God','01/01/21',0,0,0)"
-    # cur.execute(sql)
-    # conn.commit()
-    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Stin God',0,0,0,0,0,0,0,0,0)"
-    # cur.execute(sql)
-    # conn.commit()
+    sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Godric',0,0,0,0,0,0,0,0,0,0,0,0,0)"
+    cur.execute(sql)
+    conn.commit()
+    sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Godric','01/01/21',0,0,0)"
+    cur.execute(sql)
+    conn.commit()
+    sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Godric',0,0,0,0,0,0,0,0,0)"
+    cur.execute(sql)
+    conn.commit()
     ##logic for dumping tables and starting from scratch
     # sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
     # cur.execute(sql)
@@ -78,7 +78,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric II", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God"]
+users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "K3v1nRul3s", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
