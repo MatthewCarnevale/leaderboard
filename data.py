@@ -41,31 +41,31 @@ def buildTables():
     cur.execute(sql)
     conn.commit()
     ##logic for adding new player to table
-    sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Challenger1Month',0,0,0,0,0,0,0,0,0,0,0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Challenger1Month','01/01/21',0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Challenger1Month',0,0,0,0,0,0,0,0,0)"
-    cur.execute(sql)
-    conn.commit()
-    ##logic for dumping tables and starting from scratch
-    # sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
+    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Challenger1Month',0,0,0,0,0,0,0,0,0,0,0,0,0)"
     # cur.execute(sql)
     # conn.commit()
-    # for user in users:
-    #     if user == "Trúst":
-    #         user = "Trust"
-    #     sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES (%s,0,0,0,0,0,0,0,0,0,0,0,0,0)"
-    #     cur.execute(sql,(user,))
-    #     conn.commit()
-    #     sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES (%s,'01/01/21',0,0,0)"
-    #     cur.execute(sql,(user,))
-    #     conn.commit()
-    #     sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES (%s,0,0,0,0,0,0,0,0,0)"
-    #     cur.execute(sql,(user,))
-    #     conn.commit()
+    # sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Challenger1Month','01/01/21',0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Challenger1Month',0,0,0,0,0,0,0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    ##logic for dumping tables and starting from scratch
+    sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
+    cur.execute(sql)
+    conn.commit()
+    for user in users:
+        if user == "Trúst":
+            user = "Trust"
+        sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES (%s,0,0,0,0,0,0,0,0,0,0,0,0,0)"
+        cur.execute(sql,(user,))
+        conn.commit()
+        sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES (%s,'01/01/21',0,0,0)"
+        cur.execute(sql,(user,))
+        conn.commit()
+        sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES (%s,0,0,0,0,0,0,0,0,0)"
+        cur.execute(sql,(user,))
+        conn.commit()
     
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
@@ -78,7 +78,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "Kalichi", "Challenger1Month", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God"]
+users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "Kalichi", "Challenger1Month", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God", "Vayler", "khalí", "19PX", "Riko Best Girl"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
