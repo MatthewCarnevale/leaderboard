@@ -282,12 +282,12 @@ def rankConversion(ranks):
 
 def dailyGames():
     conn, cur = dbCon()
-    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 14"
+    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 18"
     cur.execute(sql)
     totalgames = cur.fetchall()
     totalgames.reverse()
     dGames = []
-    for i in range(0,14):
+    for i in range(0,18):
         dGames.append(totalgames[i][0])
     return dGames
 
@@ -310,7 +310,7 @@ def rankedPull():
     conn, cur = dbCon()
     print("pullin the ranks")
     playerList = []
-    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 14"
+    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 18"
     cur.execute(fetchPlayers)
     players = cur.fetchall()
     players.reverse()
@@ -355,7 +355,7 @@ def lifetime(summonerName):
 
 def yesterdaysDelta():
     conn, cur = dbCon()
-    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 14"
+    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 18"
     cur.execute(sql)
     yesterday = cur.fetchall()
     yesterday.reverse()
