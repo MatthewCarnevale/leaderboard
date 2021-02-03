@@ -34,5 +34,7 @@ def summoner_index(SUMMONER):
             name = SUMMONER,
             accolades = accolades
         )
-
+@app.route("/Sasis")
+def sasis_index():
+    return flask.render_template("sasis.html")
 app.run(port=int(os.getenv("PORT", 8080)), host=os.getenv("IP", "0.0.0.0"))

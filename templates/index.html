@@ -9,7 +9,7 @@
       <li>You can click someones rank to go to op.gg for that person</li>
       <li>All stats are for solo/duo queue only</li>
       <li>Players must have finished ranked placement games to be on the list.</li>
-      <li>Data and lifetime stats are being tracked from 3:50 AM on January 13th 2021. Games played before this time DO NOT COUNT FOR LIFETIME STATS</li>
+      <li>Data and lifetime stats are being tracked from 1:30 PM on February 3rd 2021. Games played before this time DO NOT COUNT FOR LIFETIME STATS</li>
       <li>Stats are updated every 20 minutes (at :00, :20, and :40). In the future there will be a force update button à la op.gg</li>
       <li>Thanks to KC (Kalichi) for helping with a lot of the javascript stuff :D</li>
     </ul>
@@ -71,6 +71,45 @@
         {%endfor%}
         </tbody>
     </table>
+
+
+<!-- SASIS TABLE -->
+
+    <table id="leaderboard" class="leaderboard">
+      <thead>
+      <tr>
+          <th class="pointer" onclick="sortAlpha('name')">Name </th>
+          <th class="pointer" onclick="sortNum('level')">Level</th>
+          <th class="pointer" onclick="sortNum('mmr')">Tier</th>
+          <th class="pointer" onclick="sortNum('wins')">Wins</th>
+          <th class="pointer" onclick="sortNum('losses')">Losses</th>
+          <th class="pointer" onclick="sortNum('totalgames')">Total Games</th>
+          <th class="pointer" onclick="sortNum('winrate')">Winrate</th>
+          <th class="pointer" onclick="sortNum('lpdelta')">ΔLP</th>
+          <th class="pointer" onclick="sortNum('dailywins')">daily games</th>
+          <th class="pointer" onclick="sortNum('yesterday')">Yesterday's ΔLP</th>
+      </tr>
+      </thead>
+      <tbody id='leaderboard-body'>
+      <tr>
+          <td> <a class="opgg" href="https://martyleaderboard.herokuapp.com/sasis" target="_blank">Mama Zer0</a></td>
+          <td> 0000</td>
+          <td> <a class="opgg" href="https://na.op.gg/summoner/userName=mama+zer0" target="_blank"> Challenger 1000lp </a></td>
+          <td> 1000</td>
+          <td> 0 </td>
+          <td> 1000</td>
+          <td> 100% </td>
+          <td> 0</td>
+          <td>0</td>
+          <td>0</td>
+      </tr>
+      </tbody>
+  </table>
+
+<!-- SASIS TABLE -->
+
+
+
     <!-- <img src="static/meme.png" class="meme"> -->
   </div>
     <br>
