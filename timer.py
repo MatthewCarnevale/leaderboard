@@ -27,7 +27,7 @@ def timeTest():
     #because the Heroku psql server is in UTC time this hour == 5 is used to compensate and make update happen at midnight EST
     # print(oldHour[0])
     # print(oldMinutes[0])
-    if hour == 5 and minutes >= 0 and minutes <= 10:
+    if hour == 5 and minutes >= 0 and minutes <= 10 or True:
         print("making daily lp check")
         sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
         sql2 = "SELECT lpdelta FROM playerdata WHERE name=%s ORDER BY id DESC limit 1"
