@@ -287,7 +287,7 @@ def dailyGames():
     totalgames = cur.fetchall()
     totalgames.reverse()
     dGames = []
-    for i in range(0,18):
+    for i in range(0,19):
         dGames.append(totalgames[i][0])
     return dGames
 
