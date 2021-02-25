@@ -1,0 +1,3 @@
+wanna clean up database stuff and make foreign key relations + update statements
+gonna need to make a branch and risk a lot of damage
+shouldn't push all this to main postgres db should use local one instead
