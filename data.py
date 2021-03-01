@@ -55,18 +55,22 @@ def buildTables():
     sql = "CREATE TABLE IF NOT EXISTS players( name VARCHAR(255), CONSTRAINT players_pkey PRIMARY KEY (name))"
     cur.execute(sql)
     conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS dailylp (name VARCHAR(255), date date, lp integer, totalgames integer, yesterdaysdelta integer, CONSTRAINT daily_pkey PRIMARY KEY (name), CONSTRAINT name FOREIGN KEY (name) REFERENCES players (name))"
+    sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, name VARCHAR(255), date date, lp integer, totalgames integer, yesterdaysdelta integer, CONSTRAINT daily_pkey PRIMARY KEY (name), CONSTRAINT name FOREIGN KEY (name) REFERENCES players (name))"
     cur.execute(sql)
     conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS playerdata ( name VARCHAR(255), level integer, tier VARCHAR(255), rank VARCHAR(255), lp integer, mmr integer, lpdelta integer, dailygames integer, wins integer, losses integer, CONSTRAINT data_pkey PRIMARY KEY (name), CONSTRAINT playerdata FOREIGN KEY (name) REFERENCES players (name))"
+    sql = "CREATE TABLE IF NOT EXISTS playerdata (id Serial, name VARCHAR(255), level integer, tier VARCHAR(255), rank VARCHAR(255), lp integer, mmr integer, lpdelta integer, dailygames integer, wins integer, losses integer, CONSTRAINT data_pkey PRIMARY KEY (name), CONSTRAINT playerdata FOREIGN KEY (name) REFERENCES players (name))"
     cur.execute(sql)
     conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS matchhistory ( name VARCHAR(255), teamid integer, champid VARCHAR(255), gametime VARCHAR(255), win VARCHAR(255), kills integer, deaths integer, assists integer, spree integer, multi integer, longlife VARCHAR(255), doubles integer, triples integer, quadras integer, pentas integer, bigkrit integer, totalchampdmg integer, towerdamage integer, vision integer, goldearned integer, goldspent integer, towerkills integer, cs integer, level integer, firstblood VARCHAR(255), dragons integer, barons integer, heralds integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255), CONSTRAINT matchhistory FOREIGN KEY (name) REFERENCES players (name))"
+    sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid integer, championid VARCHAR(255), gametime VARCHAR(255), win VARCHAR(255), kills integer, deaths integer, assists integer, spree integer, multi integer, longlife VARCHAR(255), doubles integer, triples integer, quadras integer, pentas integer, bigkrit integer, totalchampdmg integer, towerdamage integer, vision integer, goldearned integer, goldspent integer, towerkills integer, cs integer, level integer, firstblood VARCHAR(255), dragons integer, barons integer, heralds integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255), CONSTRAINT matchhistory FOREIGN KEY (name) REFERENCES players (name))"
     cur.execute(sql)
     conn.commit()
     sql = "CREATE TABLE IF NOT EXISTS lifetime ( name VARCHAR(255), kills integer, deaths integer, assists integer, avgtime integer, longestspree integer, quads integer, pentas integer, bigkrit integer, totalcreeps integer, firstbloods integer, dragons integer, barons integer, heralds integer, CONSTRAINT life_pkey PRIMARY KEY (name), CONSTRAINT lifetime FOREIGN KEY (name) REFERENCES players (name))"
     cur.execute(sql)
     conn.commit()
+    sql = "CREATE TABLE IF NOT EXISTS timetracker (id Serial, date VARCHAR(255), hour Integer, minutes Integer)"
+    cur.execute(sql)
+    conn.commit()
+
     ##logic for dumping tables and starting from scratch
     # sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
     # cur.execute(sql)
@@ -74,10 +78,13 @@ def buildTables():
     # for user in users:
     #     if user == "Trúst":
     #         user = "Trust"
+    #     sql = "INSERT INTO players (name) VALUES (%s)"
+    #     cur.execute(sql,(user,))
+    #     conn.commit()
     #     sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES (%s,0,0,0,0,0,0,0,0,0,0,0,0,0)"
     #     cur.execute(sql,(user,))
     #     conn.commit()
-    #     sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES (%s,'01/01/21',0,0,0)"
+    #     sql = "INSERT INTO dailylp (name,date,lp,totalgames,yesterdaysdelta) VALUES (%s,'01/01/21',0,0,0)"
     #     cur.execute(sql,(user,))
     #     conn.commit()
     #     sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES (%s,0,0,0,0,0,0,0,0,0)"
