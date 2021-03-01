@@ -24,7 +24,7 @@ def dbCon():
     return conn, cur
 
 def buildTables():
-    # conn, cur = dbCon()
+    #conn, cur = dbCon()
     # sql = "CREATE TABLE IF NOT EXISTS lifetime (name VARCHAR(255), kills Integer, deaths Integer, assists Integer, avgtime Integer, longestspree Integer, quads Integer, pentas Integer, bigkrit Integer, totalcreeps Integer, firstbloods Integer, dragons Integer, barons Integer, heralds Integer)"
     # cur.execute(sql)
     # conn.commit()
@@ -41,13 +41,16 @@ def buildTables():
     # cur.execute(sql)
     # conn.commit()
     # ##logic for adding new player to table
-    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('Construct 00',0,0,0,0,0,0,0,0,0,0,0,0,0)"
+    # sql = "INSERT INTO players (name) VALUES ('TNBerkman')"
     # cur.execute(sql)
     # conn.commit()
-    # sql = "INSERT INTO dailylp (summoner,date,lp,totalgames,yesterdaysdelta) VALUES ('Construct 00','01/01/21',0,0,0)"
+    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('TNBerkman',0,0,0,0,0,0,0,0,0,0,0,0,0)"
     # cur.execute(sql)
     # conn.commit()
-    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('Construct 00',0,0,0,0,0,0,0,0,0)"
+    # sql = "INSERT INTO dailylp (name,date,lp,totalgames,yesterdaysdelta) VALUES ('TNBerkman','01/01/21',0,0,0)"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('TNBerkman',0,0,0,0,0,0,0,0,0)"
     # cur.execute(sql)
     # conn.commit()
     ##New build logic
@@ -102,7 +105,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "Kalichi", "K3v1nRul3s", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God", "Vayler", "khalí", "19PX", "Riko Best Girl", "Construct 00"]
+users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "Kalichi", "K3v1nRul3s", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God", "Vayler", "khalí", "19PX", "Riko Best Girl", "Construct 00", "TNBerkman"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
@@ -306,12 +309,12 @@ def rankConversion(ranks):
 
 def dailyGames():
     conn, cur = dbCon()
-    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 19"
+    sql = "SELECT totalgames FROM dailylp ORDER BY id DESC LIMIT 20"
     cur.execute(sql)
     totalgames = cur.fetchall()
     totalgames.reverse()
     dGames = []
-    for i in range(0,19):
+    for i in range(0,20):
         dGames.append(totalgames[i][0])
     return dGames
 
@@ -334,7 +337,7 @@ def rankedPull():
     conn, cur = dbCon()
     print("pullin the ranks")
     playerList = []
-    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 19"
+    fetchPlayers = "SELECT name,level,tier,rank,lp,mmr,lpdelta,dailygames,wins,losses FROM playerdata ORDER BY id DESC LIMIT 20"
     cur.execute(fetchPlayers)
     players = cur.fetchall()
     players.reverse()
@@ -379,7 +382,7 @@ def lifetime(summonerName):
 
 def yesterdaysDelta():
     conn, cur = dbCon()
-    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 19"
+    sql = "SELECT yesterdaysdelta FROM dailylp ORDER BY id DESC LIMIT 20"
     cur.execute(sql)
     yesterday = cur.fetchall()
     yesterday.reverse()
