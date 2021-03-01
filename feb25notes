@@ -1,0 +1,24 @@
+wanna clean up database stuff and make foreign key relations + update statements
+gonna need to make a branch and risk a lot of damage
+shouldn't push all this to main postgres db should use local one instead
+
+
+timetracker should be using update not insert, otherwise its good
+new foreign key tables are created need to implement them into code
+match history needs to be inserted
+lifetime should be updated
+daily should be updated
+data idk might need a few rows?
+data should be able to be updated i think
+
+naming changes
+lifetime = life
+matchhistory = history
+NEW players
+dailylp = daily
+playerdata = data
+
+
+CREATE TABLE players( name character varying, CONSTRAINT players_pkey PRIMARY KEY (name))
+
+CREATE TABLE daily(name character varying, date date,lp integer,totalgames integer,yesterdaysdelta integer,CONSTRAINT daily_pkey PRIMARY KEY (name),CONSTRAINT name FOREIGN KEY (name)REFERENCES players (name) MATCH SIMPLE)
