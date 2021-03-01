@@ -29,7 +29,8 @@ def timeTest():
     # print(oldMinutes[0])
     if hour == 5 and minutes >= 0 and minutes <= 10:
         print("making daily lp check")
-        sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
+        #sql = "INSERT INTO dailylp (summoner, date, lp, totalgames, yesterdaysdelta) VALUES (%s,%s,%s,%s,%s);"
+        sql = "UPDATE dailylp SET date=%s, lp=%s, totalgames=%s, yesterdaysdelta=%s WHERE summoner=%s"
         sql2 = "SELECT lpdelta FROM playerdata WHERE name=%s ORDER BY id DESC limit 1"
         print(playerDict.items())
         for key, value in playerDict.items():
@@ -38,7 +39,7 @@ def timeTest():
             cur.execute(sql2, (key,))
             dailyDelta = cur.fetchall()
             totalGames = value[7] + value[8]
-            cur.execute(sql, (key, date, value[4], totalGames, dailyDelta[0]))
+            cur.execute(sql, (date, value[4], totalGames, dailyDelta[0],key))
             conn.commit()
 
     sql = "INSERT INTO timetracker(date, hour, minutes) VALUES (%s,%s,%s);"
@@ -59,11 +60,13 @@ def timeTest():
         totalDayGames = (value[7] + value[8]) - dailyGames[counter][0]
         counter = counter+1
         delta = value[4] - startingMmr
-        sql = "INSERT INTO playerdata(name,level,tier,rank,lp, mmr, lpdelta, dailygames, wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+        #HERE
+        #sql = "INSERT INTO playerdata(name,level,tier,rank,lp, mmr, lpdelta, dailygames, wins,losses) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
+        sql = "UPDATE playerdata SET level=%s, tier=%s, rank=%s, lp=%s, mmr=%s, lpdelta=%s, dailygames=%s, wins=%s, losses=%s WHERE name=%s;"
         if key == "Trúst":
             key = "Trust"
         #HERE
-        cur.execute(sql, (key, value[0],value[1],value[2],value[3],value[4], delta, totalDayGames, value[7],value[8]))
+        cur.execute(sql, (value[0],value[1],value[2],value[3],value[4], delta, totalDayGames, value[7],value[8],key))
         conn.commit()
 timeTest()
 #
