@@ -1,0 +1,17 @@
+****WHEN ADDING NEW USERS TO TABLE****
+drop all tables, run table builder function in data.py
+add name to list of users, increase all instances of 8->new number.
+
+REMEMBER TO CHANGE RIOT API KEY IN HEROKU KEY CONFIG
+
+NEED RIOT TO APPROVE ME D:
+
+to get heroku psql url: heroku config:get DATABASE_URL -a your-app
+
+heroku logs --ps scheduler
+
+USEFUL LINKS: 
+https://martyleaderboard.herokuapp.com/
+https://dashboard.heroku.com/apps/martyleaderboard/scheduler
+https://github.com/EverWinter23/postgres-heroku
+https://devcenter.heroku.com/articles/scheduler
