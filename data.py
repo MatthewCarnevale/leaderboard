@@ -24,57 +24,28 @@ def dbCon():
     return conn, cur
 
 def buildTables():
-    #conn, cur = dbCon()
-    # sql = "CREATE TABLE IF NOT EXISTS lifetime (name VARCHAR(255), kills Integer, deaths Integer, assists Integer, avgtime Integer, longestspree Integer, quads Integer, pentas Integer, bigkrit Integer, totalcreeps Integer, firstbloods Integer, dragons Integer, barons Integer, heralds Integer)"
+    # ##New build logic
+    # conn, cur = dbCon()
+    # sql = "CREATE TABLE IF NOT EXISTS players( name VARCHAR(255), CONSTRAINT players_pkey PRIMARY KEY (name))"
     # cur.execute(sql)
     # conn.commit()
-    # sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, summoner VARCHAR(255), date VARCHAR(255), lp Integer, totalgames Integer, yesterdaysdelta Integer)"
+    # sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, name VARCHAR(255), date date, lp integer, totalgames integer, yesterdaysdelta integer, CONSTRAINT daily_pkey PRIMARY KEY (name), CONSTRAINT name FOREIGN KEY (name) REFERENCES players (name))"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "CREATE TABLE IF NOT EXISTS playerdata (id Serial, name VARCHAR(255), level integer, tier VARCHAR(255), rank VARCHAR(255), lp integer, mmr integer, lpdelta integer, dailygames integer, wins integer, losses integer, CONSTRAINT data_pkey PRIMARY KEY (name), CONSTRAINT playerdata FOREIGN KEY (name) REFERENCES players (name))"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid integer, championid VARCHAR(255), gametime VARCHAR(255), win VARCHAR(255), kills integer, deaths integer, assists integer, spree integer, multi integer, longlife VARCHAR(255), doubles integer, triples integer, quadras integer, pentas integer, bigkrit integer, totalchampdmg integer, towerdamage integer, vision integer, goldearned integer, goldspent integer, towerkills integer, cs integer, level integer, firstblood VARCHAR(255), dragons integer, barons integer, heralds integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255), CONSTRAINT matchhistory FOREIGN KEY (name) REFERENCES players (name))"
+    # cur.execute(sql)
+    # conn.commit()
+    # sql = "CREATE TABLE IF NOT EXISTS lifetime ( name VARCHAR(255), kills integer, deaths integer, assists integer, avgtime integer, longestspree integer, quads integer, pentas integer, bigkrit integer, totalcreeps integer, firstbloods integer, dragons integer, barons integer, heralds integer, CONSTRAINT life_pkey PRIMARY KEY (name), CONSTRAINT lifetime FOREIGN KEY (name) REFERENCES players (name))"
     # cur.execute(sql)
     # conn.commit()
     # sql = "CREATE TABLE IF NOT EXISTS timetracker (id Serial, date VARCHAR(255), hour Integer, minutes Integer)"
     # cur.execute(sql)
     # conn.commit()
-    # sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid Integer, championid Integer, gametime VARCHAR(255), win Boolean, kills Integer, deaths Integer, assists Integer, spree Integer, multi Integer, longlife VARCHAR(255), doubles Integer, triples Integer, quadras Integer, pentas Integer, bigkrit Integer, totalchampdmg Integer, towerdamage Integer, vision Integer, goldearned Integer, goldspent Integer, towerkills Integer, cs Integer, level Integer, firstblood Boolean, dragons Integer, barons Integer, heralds Integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255))"
-    # cur.execute(sql)
-    # conn.commit()
-    # sql = "CREATE TABLE IF NOT EXISTS playerdata (id Serial, name VARCHAR(255), level Integer, tier VARCHAR(255), rank VARCHAR(255), lp Integer, mmr Integer, lpdelta Integer, dailygames Integer, wins Integer, losses Integer)"
-    # cur.execute(sql)
-    # conn.commit()
-    # ##logic for adding new player to table
-    # sql = "INSERT INTO players (name) VALUES ('TNBerkman')"
-    # cur.execute(sql)
-    # conn.commit()
-    # sql = "INSERT INTO lifetime (name, kills, deaths, assists, avgtime, longestspree, quads, pentas, bigkrit, totalcreeps, firstbloods, dragons, barons, heralds) VALUES ('TNBerkman',0,0,0,0,0,0,0,0,0,0,0,0,0)"
-    # cur.execute(sql)
-    # conn.commit()
-    # sql = "INSERT INTO dailylp (name,date,lp,totalgames,yesterdaysdelta) VALUES ('TNBerkman','01/01/21',0,0,0)"
-    # cur.execute(sql)
-    # conn.commit()
-    # sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES ('TNBerkman',0,0,0,0,0,0,0,0,0)"
-    # cur.execute(sql)
-    # conn.commit()
-    ##New build logic
-    conn, cur = dbCon()
-    sql = "CREATE TABLE IF NOT EXISTS players( name VARCHAR(255), CONSTRAINT players_pkey PRIMARY KEY (name))"
-    cur.execute(sql)
-    conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS dailylp (id Serial, name VARCHAR(255), date date, lp integer, totalgames integer, yesterdaysdelta integer, CONSTRAINT daily_pkey PRIMARY KEY (name), CONSTRAINT name FOREIGN KEY (name) REFERENCES players (name))"
-    cur.execute(sql)
-    conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS playerdata (id Serial, name VARCHAR(255), level integer, tier VARCHAR(255), rank VARCHAR(255), lp integer, mmr integer, lpdelta integer, dailygames integer, wins integer, losses integer, CONSTRAINT data_pkey PRIMARY KEY (name), CONSTRAINT playerdata FOREIGN KEY (name) REFERENCES players (name))"
-    cur.execute(sql)
-    conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS matchhistory (id Serial, name VARCHAR(255), teamid integer, championid VARCHAR(255), gametime VARCHAR(255), win VARCHAR(255), kills integer, deaths integer, assists integer, spree integer, multi integer, longlife VARCHAR(255), doubles integer, triples integer, quadras integer, pentas integer, bigkrit integer, totalchampdmg integer, towerdamage integer, vision integer, goldearned integer, goldspent integer, towerkills integer, cs integer, level integer, firstblood VARCHAR(255), dragons integer, barons integer, heralds integer, role VARCHAR(255), lane VARCHAR(255), gameid VARCHAR(255), CONSTRAINT matchhistory FOREIGN KEY (name) REFERENCES players (name))"
-    cur.execute(sql)
-    conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS lifetime ( name VARCHAR(255), kills integer, deaths integer, assists integer, avgtime integer, longestspree integer, quads integer, pentas integer, bigkrit integer, totalcreeps integer, firstbloods integer, dragons integer, barons integer, heralds integer, CONSTRAINT life_pkey PRIMARY KEY (name), CONSTRAINT lifetime FOREIGN KEY (name) REFERENCES players (name))"
-    cur.execute(sql)
-    conn.commit()
-    sql = "CREATE TABLE IF NOT EXISTS timetracker (id Serial, date VARCHAR(255), hour Integer, minutes Integer)"
-    cur.execute(sql)
-    conn.commit()
 
-    ##logic for dumping tables and starting from scratch
+    # ##logic for dumping tables and starting from scratch
     # sql = "INSERT INTO timetracker (date, hour, minutes) VALUES ('01/01/21',0,0)"
     # cur.execute(sql)
     # conn.commit()
@@ -93,7 +64,7 @@ def buildTables():
     #     sql = "INSERT INTO playerdata (name, level, tier, rank, lp, mmr, lpdelta, dailygames, wins, losses) VALUES (%s,0,0,0,0,0,0,0,0,0)"
     #     cur.execute(sql,(user,))
     #     conn.commit()
-    
+
 def rankedStatsBuilder(user):
     lolwatcher = LolWatcher(riot)
     my_region="na1"
@@ -105,7 +76,7 @@ def rankedStatsBuilder(user):
     return summoner, ranked_stats, lolwatcher
 #ranked stats dont exist for players without 10 games played
 #users = ["MarTea", "Stin God", "Bassel", "Trúst", "Big Itzweird", "K3v1nRul3s", "Kareem100", "aminrhino", "Mama Zer0", "Xerous", "Vayler", "Glorious Duelist", "Godric II", "shadowninjas13", "Kalichi", "Riko Best Girl", "Jebal", "Jin VI", "Kerø"]
-users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "Kalichi", "K3v1nRul3s", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "A GIANT 8IIIID", "Stin God", "Vayler", "khalí", "19PX", "Riko Best Girl", "Construct 00", "TNBerkman"]
+users = ["MarTea", "Trúst","Bassel", "Big Itzweird", "Kalichi", "K3v1nRul3s", "aminrhino", "Godric", "shadowninjas13", "Glorious Duelist", "Kareem100", "Xerous", "FREE HONGEY KONG", "Stin God", "Vayler", "khalí", "19PX", "Riko Best Girl", "Construct 00", "TNBerkman"]
 def matchFunc(summoner, lolwatcher):
     conn, cur = dbCon()
     name = summoner["name"]
