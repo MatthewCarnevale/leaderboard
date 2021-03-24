@@ -382,7 +382,7 @@ def isQueue():
                 lossCounter = lossCounter + 1
         winCounter = 0
         for value in data:
-            if value[0] == "False":
+            if value[0] == "false":
                 break
             else:
                 winCounter = winCounter + 1
