@@ -20,6 +20,14 @@ def index():
         loserDict = loserDict
     )
 
+@app.route("/sasis")
+def sasis_index():
+    return flask.render_template("sasis.html")
+
+@app.route("/emmy")
+def emmy_index():
+    return flask.render_template("emmy.html")
+
 @app.route("/<SUMMONER>")
 def summoner_index(SUMMONER):
     recentGameStats = summonerInfo(SUMMONER)
@@ -34,7 +42,5 @@ def summoner_index(SUMMONER):
             name = SUMMONER,
             accolades = accolades
         )
-@app.route("/sasis")
-def sasis_index():
-    return flask.render_template("sasis.html")
+
 app.run(port=int(os.getenv("PORT", 8080)), host=os.getenv("IP", "0.0.0.0"))
