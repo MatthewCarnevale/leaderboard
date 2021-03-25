@@ -103,7 +103,7 @@ function colorToday() {
     }
   }
 }
-// colorToday();
+colorToday();
 
 function colorYesterday() {
   var table, tr, td, i, lpDelta;
@@ -126,7 +126,7 @@ function colorYesterday() {
     }
   }
 }
-// colorYesterday()
+colorYesterday()
 
 function numbering() {
   table = document.getElementById("leaderboard")
