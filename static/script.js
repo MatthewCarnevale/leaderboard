@@ -126,7 +126,7 @@ function colorYesterday() {
     }
   }
 }
-colorYesterday()
+// colorYesterday()
 
 function numbering() {
   table = document.getElementById("leaderboard")
