@@ -103,7 +103,7 @@ function colorToday() {
     }
   }
 }
-colorToday();
+// colorToday();
 
 function colorYesterday() {
   var table, tr, td, i, lpDelta;
@@ -143,5 +143,4 @@ function numbering() {
     j = j +1;
   }
 }
-numbering()
 //tets
