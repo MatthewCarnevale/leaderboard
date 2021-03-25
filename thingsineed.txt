@@ -226,6 +226,3 @@ achivements?
 use data dragon for champion ID
 force update button
 
-
-i fucking dumped the daily lp table like a retard
-add emmy, fahad, jamie, sasis

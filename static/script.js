@@ -87,15 +87,11 @@ function colorToday() {
   for(i=0; i< tr.length; i++) {
     deltaLP = tr[i].getElementsByTagName("td")[8];
     dailyGames = tr[i].getElementsByTagName("td")[9];
-    console.log(deltaLP);
-    console.log(dailyGames);
     // console.log(td) = lpdelta value per row
     if(deltaLP) {
       if(deltaLP.innerHTML < 0) {
-        console.log("should be red")
         deltaLP.style.backgroundColor = "red"
       } else if (deltaLP.innerHTML > 0) {
-        console.log("should be green")
         deltaLP.style.backgroundColor = "green"
        } else if(deltaLP.innerHTML == 0 && dailyGames.innerHTML > 0){
         deltaLP.style.backgroundColor = "yellow"
@@ -115,10 +111,8 @@ function colorYesterday() {
     // console.log(td) = lpdelta value per row
     if(td) {
       if(td.innerHTML < 0) {
-        console.log("should be red")
         td.style.backgroundColor = "red"
       } else if (td.innerHTML > 0) {
-        console.log("should be green")
         td.style.backgroundColor = "green"
        } //else if (td.innerHTML == 0) {
          //td.style.backgroundColor = "yellow"

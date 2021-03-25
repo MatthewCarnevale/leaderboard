@@ -1,11 +1,16 @@
 import os
 import flask
 import flask_sqlalchemy
+from flask import request
 from data import rankedPull, deltaDate, summonerInfo, lifetime, users, yesterdaysDelta, isQueue
+from timer import timeTest
 
 app = flask.Flask(__name__)
-@app.route("/")
+@app.route("/", methods=["POST","GET"])
 def index():
+    if request.method == "POST":
+        timeTest()
+        print("YUH")
     playerDict = rankedPull()
     date = deltaDate()
     yesterday = yesterdaysDelta()
@@ -19,7 +24,6 @@ def index():
         winnerDict = winnerDict,
         loserDict = loserDict
     )
-
 @app.route("/sasis")
 def sasis_index():
     return flask.render_template("sasis.html")
