@@ -372,9 +372,6 @@ def isQueue():
             user = "Trust"
         cur.execute(sql, (user,))
         data = cur.fetchall()
-        if(len(data) > 0):
-            print(data[0])
-            print(type(data[0]))
         lossCounter = 0
         for value in data:
             if value[0] == "true":

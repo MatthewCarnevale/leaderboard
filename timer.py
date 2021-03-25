@@ -2,6 +2,7 @@ import psycopg2
 import datetime
 import time
 from data import dbCon, playerCreate, constructDict
+import requests
 
 def timeTest():
     conn, cur = dbCon()
@@ -68,6 +69,8 @@ def timeTest():
         #HERE
         cur.execute(sql, (value[0],value[1],value[2],value[3],value[4], delta, totalDayGames, value[7],value[8],key))
         conn.commit()
+
+    x = requests.get('http://martyleaderboard.herokuapp.com/')
 timeTest()
 #
 print("ok me done with api push")
