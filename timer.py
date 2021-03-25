@@ -68,5 +68,6 @@ def timeTest():
         #HERE
         cur.execute(sql, (value[0],value[1],value[2],value[3],value[4], delta, totalDayGames, value[7],value[8],key))
         conn.commit()
+timeTest()
 #
 print("ok me done with api push")

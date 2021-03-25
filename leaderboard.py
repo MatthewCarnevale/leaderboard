@@ -8,9 +8,9 @@ from timer import timeTest
 app = flask.Flask(__name__)
 @app.route("/", methods=["POST","GET"])
 def index():
-    if request.method == "POST":
-        timeTest()
-        print("YUH")
+    # if request.method == "POST":
+    #     timeTest()
+    #     print("YUH")
     playerDict = rankedPull()
     date = deltaDate()
     yesterday = yesterdaysDelta()
