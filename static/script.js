@@ -26,6 +26,7 @@ const sortNum = (by) => {
   }
   currentSort.by = by;
   rows.forEach((row) => tableBody.append(row));
+  numbering();
 };
 
 /**
@@ -47,6 +48,7 @@ const sortAlpha = (by) => {
   }
   currentSort.by = by;
   rows.forEach((row) => tableBody.append(row));
+  numbering();
 };
 
 sortNum('mmr');
@@ -83,8 +85,8 @@ function colorToday() {
   tr = table.getElementsByTagName("tr");
 
   for(i=0; i< tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[7];
-    td2 = tr[i].getElementsByTagName("td")[8];
+    td = tr[i].getElementsByTagName("td")[8];
+    td2 = tr[i].getElementsByTagName("td")[9];
     // console.log(td) = lpdelta value per row
     if(td) {
       if(td.innerHTML < 0) {
@@ -107,7 +109,7 @@ function colorYesterday() {
   tr = table.getElementsByTagName("tr");
 
   for(i=0; i< tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[9];
+    td = tr[i].getElementsByTagName("td")[10];
     // console.log(td) = lpdelta value per row
     if(td) {
       if(td.innerHTML < 0) {
@@ -123,3 +125,20 @@ function colorYesterday() {
   }
 }
 colorYesterday()
+
+function numbering() {
+  table = document.getElementById("leaderboard")
+  tr = table.getElementsByTagName("tr")
+  row = document.getElementsByClassName("num");
+  var j = 1;
+  for(i=0; i< tr.length; i++)
+  {
+    if(row[i] === undefined)
+    {
+      break;
+    }
+    row[i].innerHTML = j;
+    j = j +1;
+  }
+}
+numbering()

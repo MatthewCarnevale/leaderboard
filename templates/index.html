@@ -14,8 +14,8 @@
       <li>Thanks to KC (Kalichi) for helping with a lot of the javascript stuff :D</li>
     </ul>
     <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names..">
-    <div>
-      {% set count = namespace(value=1) %}
+    <div class="table">
+      <!-- {% set count = namespace(value=1) %}
       <table id="rnk" class="rnk">
         <thead>
           <tr>
@@ -30,10 +30,11 @@
         </tr>
         {% endfor %}
         </tbody>
-      </table>
+      </table> -->
       <table id="leaderboard" class="leaderboard">
         <thead>
         <tr>
+            <th> Rnk </th>
             <th class="pointer" onclick="sortAlpha('name')">Name </th>
             <th class="pointer" onclick="sortNum('level')">Level</th>
             <th class="pointer" onclick="sortNum('mmr')">Tier</th>
@@ -47,11 +48,14 @@
         </tr>
         </thead>
         <tbody id='leaderboard-body'>
+          {% set count = namespace(value=1) %}
         {% for key, value in playerDict.items()%}
         <tr data-name={{key}} data-level={{value[0]}} data-wins={{value[7]}} data-losses={{value[8]}} data-totalgames={{value[7]+value[8]}} data-winrate={{value[7]/(value[7]+value[8])}} data-mmr={{value[4]}} data-lpdelta={{value[5]}} data-dailywins={{value[6]}} data-yesterday={{value[9]}} class='leaderboard-row'>
             {%if key == "Trust"%}
             {%set key = "Trúst"%}
             {%endif%}
+            <td class="num" id="num">{{count.value}} </td>
+            {% set count.value = count.value + 1 %}
             <td> <a class="opgg" href="https://martyleaderboard.herokuapp.com/{{key}}" target="_blank">{{key}}</a></td>
             <!-- <td> <a class="opgg" href="localhost:8080/{{key}}" target="_blank">{{key}}</a></td> -->
             <td> {{value[0]}}</td>
@@ -71,7 +75,7 @@
         {%endfor%}
         </tbody>
     </table>
-
+  </div>
 
 <!-- SASIS TABLE -->
 
@@ -123,7 +127,6 @@
 
 
     <!-- <img src="static/meme.png" class="meme"> -->
-  </div>
     <br>
   <div>
     <table class="queue">
@@ -168,5 +171,6 @@
           </tbody>
         </table>
       </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src={{ url_for('static', filename='script.js') }}></script>
 </HTML>
