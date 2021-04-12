@@ -3,7 +3,6 @@ import flask
 import flask_sqlalchemy
 from flask import request
 from data import rankedPull, deltaDate, summonerInfo, lifetime, users, yesterdaysDelta, isQueue
-from timer import timeTest
 
 app = flask.Flask(__name__)
 @app.route("/", methods=["POST","GET"])
